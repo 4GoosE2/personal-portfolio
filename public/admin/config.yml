@@ -1,7 +1,6 @@
 # Decap CMS configuration
 #
-# Production backend: GitHub. After pushing this repo to GitHub, replace
-# OWNER/REPO below with the real repository (e.g. martenwikman/portfolio).
+# Production backend: GitHub (4GoosE2/personal-portfolio).
 # Authentication runs through Netlify's OAuth provider — see README
 # ("Deployment" section) for the one-time GitHub OAuth app setup.
 #
