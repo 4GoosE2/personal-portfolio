@@ -11,7 +11,7 @@
 
 backend:
   name: github
-  repo: OWNER/REPO
+  repo: 4GoosE2/personal-portfolio
   branch: main
   base_url: https://api.netlify.com
 
