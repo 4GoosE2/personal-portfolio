@@ -1,0 +1,126 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  /** "sidebar" (sticky right column, desktop) or "strip" (horizontal, mobile). */
+  variant: "sidebar" | "strip";
+}
+
+const { project, variant } = Astro.props;
+const { category, subcategory, tags, date, metrics } = project.data;
+---
+
+<aside class={`meta-panel meta-${variant}`} aria-label="Project metadata">
+  <div class="meta-item">
+    <span class="mono-label">Category</span>
+    <span class="mono">{category}</span>
+  </div>
+
+  {subcategory && (
+    <div class="meta-item">
+      <span class="mono-label">Subcategory</span>
+      <span class="mono">{subcategory}</span>
+    </div>
+  )}
+
+  {tags.length > 0 && (
+    <div class="meta-item">
+      <span class="mono-label">Tags</span>
+      <ul class="tag-list" role="list">
+        {tags.map((tag) => (
+          <li class="mono tag">{tag}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {metrics.length > 0 && (
+    <div class="meta-item">
+      <span class="mono-label">Key metrics</span>
+      <dl class="metric-list">
+        {metrics.map((metric, i) => (
+          <div class="metric">
+            <dt class="mono metric-label">{metric.label}</dt>
+            <dd class={`mono ${i === 0 ? "standout" : ""}`}>{metric.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  )}
+
+  <div class="meta-item">
+    <span class="mono-label">Date</span>
+    <span class="mono">{date}</span>
+  </div>
+</aside>
+
+<style>
+  .meta-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .tag-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.9rem;
+  }
+
+  .tag {
+    color: var(--signal);
+    font-size: 0.78rem;
+  }
+
+  .metric-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 0;
+  }
+
+  .metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .metric-label {
+    color: var(--fog);
+    font-size: 0.78rem;
+  }
+
+  .metric dd {
+    margin: 0;
+  }
+
+  .metric dd.standout {
+    color: var(--alert);
+    font-weight: 500;
+  }
+
+  /* Horizontal strip variant (below the title on narrow viewports) */
+  .meta-strip {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.25rem 2.5rem;
+    padding-block: 1.1rem;
+    border-block: 1px solid var(--hairline);
+  }
+
+  .meta-strip .metric {
+    gap: 0.6rem;
+    justify-content: flex-start;
+  }
+</style>

@@ -1,0 +1,110 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="About — Mårten Wikman">
+  <article class="about">
+    <header class="reveal">
+      <h1>About</h1>
+    </header>
+
+    <section class="reveal">
+      <h2 class="mono-label section-label">Profile</h2>
+      <div class="prose">
+        <p>
+          I work at the intersection of finance and data. My academic grounding
+          is in strategic management and international business; my practical
+          toolkit is SQL, Python, Power BI, and data modeling. That combination
+          means I can build the analysis myself — from raw data to a defensible
+          valuation or market view — rather than waiting on someone else's
+          spreadsheet.
+        </p>
+        <p>
+          I'm targeting roles in private equity, M&amp;A advisory, and growth
+          consulting, where that hybrid profile does its best work: commercial
+          questions answered with real data discipline.
+        </p>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <h2 class="mono-label section-label">Dissertation</h2>
+      <div class="prose">
+        <p>
+          My dissertation examined cross-border post-merger integration through
+          Simons' four levers of control — how acquirers balance belief systems,
+          boundary systems, diagnostic controls, and interactive controls when
+          integrating a foreign target. It received a <strong>First Class</strong>{" "}
+          grade and anchors the{" "}
+          <a href="/work/post-merger-integration/">Post-Merger Integration</a>{" "}
+          section of this portfolio.
+        </p>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <h2 class="mono-label section-label">Education</h2>
+      <ul class="edu-list" role="list">
+        <li>
+          <span class="edu-title">BSc International Business Management</span>
+          <span class="mono edu-meta">Coventry University</span>
+        </li>
+        <li>
+          <span class="edu-title">Business Intelligence Analyst</span>
+          <span class="mono edu-meta">Nackademin — Swedish pathway</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="reveal">
+      <h2 class="mono-label section-label">Contact</h2>
+      <div class="prose">
+        <p>
+          <a href="mailto:marten@wikman.se" class="mono">marten@wikman.se</a>
+        </p>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .about {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    max-width: 46rem;
+  }
+
+  .about section {
+    padding-top: 2rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .section-label {
+    margin-bottom: 1.25rem;
+  }
+
+  .edu-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .edu-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .edu-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+  }
+
+  .edu-meta {
+    color: var(--fog);
+    font-size: 0.8rem;
+  }
+</style>

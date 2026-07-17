@@ -1,0 +1,40 @@
+---
+interface Props {
+  items: { label: string; value: string; alert?: boolean }[];
+}
+
+const { items } = Astro.props;
+---
+
+<dl class="stat-strip">
+  {items.map((item) => (
+    <div class="stat">
+      <dt class="mono-label">{item.label}</dt>
+      <dd class={`mono ${item.alert ? "alert" : ""}`}>{item.value}</dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .stat-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    padding-block: 1.25rem;
+    border-block: 1px solid var(--hairline);
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  dd {
+    color: var(--paper);
+  }
+
+  dd.alert {
+    color: var(--alert);
+  }
+</style>

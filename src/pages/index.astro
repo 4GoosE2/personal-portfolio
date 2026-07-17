@@ -1,0 +1,167 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StatStrip from "../components/StatStrip.astro";
+import { CATEGORIES, categoryByName } from "../lib/categories";
+
+const projects = await getCollection("projects");
+const countFor = (name: string) => projects.filter((p) => p.data.category === name).length;
+
+const featured = projects.find((p) => p.id === "n8n-growth-equity-investment-memo");
+const featuredCategory = featured ? categoryByName(featured.data.category) : undefined;
+---
+
+<BaseLayout title="Mårten Wikman — Finance × Data">
+  <section class="hero reveal">
+    <h1>
+      Finance-trained, data-fluent: valuation and strategy work backed by
+      hands-on SQL, Python, and Power BI.
+    </h1>
+    <p class="hero-sub">
+      BSc International Business Management (Coventry University) · Business
+      Intelligence Analyst (Nackademin) · Targeting private equity, M&amp;A
+      advisory, and growth consulting.
+    </p>
+    <StatStrip
+      items={[
+        { label: "Dissertation", value: "First Class — PMI control" },
+        { label: "Core tools", value: "SQL · Python · Power BI · Excel" },
+        { label: "Focus", value: "PE / M&A / Growth" },
+      ]}
+    />
+  </section>
+
+  <section class="categories reveal" aria-labelledby="work-heading">
+    <h2 id="work-heading" class="section-heading mono-label">Work</h2>
+    <ul class="category-grid" role="list">
+      {CATEGORIES.map((category) => (
+        <li class="category-item">
+          <a href={`/work/${category.slug}/`} class="category-link">
+            <span class="category-name">{category.name}</span>
+            <span class="mono-label category-count">
+              {countFor(category.name)} {countFor(category.name) === 1 ? "project" : "projects"}
+            </span>
+          </a>
+          <p class="category-blurb">{category.blurb}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  {featured && featuredCategory && (
+    <section class="featured reveal" aria-labelledby="featured-heading">
+      <h2 id="featured-heading" class="section-heading mono-label">Featured case study</h2>
+      <a href={`/work/${featuredCategory.slug}/${featured.id}/`} class="featured-link">
+        {featured.data.title}
+      </a>
+      <p class="featured-sub">
+        A growth-equity style investment memo on the fair-code workflow
+        automation platform — market sizing, competitive landscape, and
+        valuation, structured the way a deal team would read it.
+      </p>
+      <span class="mono featured-meta">
+        {featured.data.subcategory} · {featured.data.date}
+      </span>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .hero h1 {
+    max-width: 22ch;
+  }
+
+  .hero-sub {
+    color: var(--fog);
+    max-width: 58ch;
+  }
+
+  .section-heading {
+    margin-bottom: 1.75rem;
+  }
+
+  .categories {
+    padding-block: 3.5rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .category-grid {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+    gap: 2.5rem 3.5rem;
+  }
+
+  .category-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .category-link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    text-decoration: none;
+  }
+
+  .category-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .category-link:hover .category-name {
+    color: var(--signal);
+  }
+
+  .category-count {
+    flex-shrink: 0;
+  }
+
+  .category-blurb {
+    color: var(--fog);
+    font-size: 0.92rem;
+  }
+
+  .featured {
+    padding-block: 3.5rem 1rem;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .featured-link {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+    text-decoration: none;
+    max-width: 28ch;
+  }
+
+  .featured-link:hover {
+    color: var(--signal);
+  }
+
+  .featured-sub {
+    color: var(--fog);
+    max-width: 58ch;
+  }
+
+  .featured-meta {
+    color: var(--fog);
+    font-size: 0.78rem;
+  }
+</style>

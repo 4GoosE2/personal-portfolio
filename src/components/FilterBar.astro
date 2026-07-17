@@ -1,0 +1,145 @@
+---
+interface Props {
+  subcategories: string[];
+  tags: string[];
+}
+
+const { subcategories, tags } = Astro.props;
+---
+
+{(subcategories.length > 0 || tags.length > 0) && (
+  <div class="filter-bar" data-filter-bar>
+    {subcategories.length > 0 && (
+      <div class="filter-group" role="group" aria-label="Filter by subcategory">
+        <span class="mono-label">Subcategory</span>
+        <div class="chips">
+          <button type="button" class="chip is-active" data-subcategory-chip="" aria-pressed="true">
+            All
+          </button>
+          {subcategories.map((sub) => (
+            <button type="button" class="chip" data-subcategory-chip={sub} aria-pressed="false">
+              {sub}
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {tags.length > 0 && (
+      <div class="filter-group" role="group" aria-label="Filter by tag">
+        <span class="mono-label">Tags</span>
+        <div class="chips">
+          {tags.map((tag) => (
+            <button type="button" class="chip" data-tag-chip={tag} aria-pressed="false">
+              {tag}
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <p class="mono-label no-results" data-no-results hidden>No projects match the current filters.</p>
+  </div>
+)}
+
+<script>
+  const bar = document.querySelector("[data-filter-bar]");
+  if (bar) {
+    const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-project]"));
+    const noResults = bar.querySelector<HTMLElement>("[data-no-results]");
+    let activeSubcategory = "";
+    const activeTags = new Set<string>();
+
+    const apply = () => {
+      let visible = 0;
+      for (const row of rows) {
+        const sub = row.dataset.subcategory ?? "";
+        const rowTags = (row.dataset.tags ?? "").split("|").filter(Boolean);
+        const subOk = !activeSubcategory || sub === activeSubcategory;
+        const tagsOk = [...activeTags].every((t) => rowTags.includes(t));
+        const show = subOk && tagsOk;
+        row.hidden = !show;
+        if (show) visible++;
+      }
+      if (noResults) noResults.hidden = visible > 0;
+    };
+
+    bar.querySelectorAll<HTMLButtonElement>("[data-subcategory-chip]").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        activeSubcategory = chip.dataset.subcategoryChip ?? "";
+        bar.querySelectorAll("[data-subcategory-chip]").forEach((c) => {
+          const on = c === chip;
+          c.classList.toggle("is-active", on);
+          c.setAttribute("aria-pressed", String(on));
+        });
+        apply();
+      });
+    });
+
+    bar.querySelectorAll<HTMLButtonElement>("[data-tag-chip]").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const tag = chip.dataset.tagChip ?? "";
+        const on = !activeTags.has(tag);
+        if (on) activeTags.add(tag);
+        else activeTags.delete(tag);
+        chip.classList.toggle("is-active", on);
+        chip.setAttribute("aria-pressed", String(on));
+        apply();
+      });
+    });
+  }
+</script>
+
+<style>
+  .filter-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-block: 2rem 2.5rem;
+  }
+
+  .filter-group {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-group > .mono-label {
+    flex-shrink: 0;
+    min-width: 7.5rem;
+  }
+
+  .chips {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--fog);
+    text-underline-offset: 4px;
+    transition: color 120ms ease;
+  }
+
+  .chip:hover {
+    color: var(--paper);
+  }
+
+  .chip.is-active {
+    color: var(--signal);
+    text-decoration: underline;
+  }
+
+  .no-results {
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+</style>

@@ -1,0 +1,136 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import MetaPanel from "../../../components/MetaPanel.astro";
+import { categoryByName } from "../../../lib/categories";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: {
+      category: categoryByName(project.data.category)!.slug,
+      slug: project.id,
+    },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const category = categoryByName(project.data.category)!;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${project.data.title} — Mårten Wikman`}>
+  <nav class="crumbs mono-label" aria-label="Breadcrumb">
+    <a href="/">Home</a> /
+    <a href={`/work/${category.slug}/`}>{category.name}</a> /
+    <span aria-current="page">{project.data.title}</span>
+  </nav>
+
+  <article class="project">
+    <header class="project-header">
+      <h1>{project.data.title}</h1>
+    </header>
+
+    <div class="meta-strip-slot">
+      <MetaPanel project={project} variant="strip" />
+    </div>
+
+    <div class="project-columns">
+      <div class="project-body prose">
+        {project.data.cover && (
+          <img src={project.data.cover} alt="" class="cover" />
+        )}
+        <Content />
+        {project.data.images && project.data.images.length > 0 && (
+          <div class="extra-images">
+            {project.data.images.map((src) => (
+              <img src={src} alt="" loading="lazy" />
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div class="meta-sidebar-slot">
+        <div class="meta-sticky">
+          <MetaPanel project={project} variant="sidebar" />
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: 2.5rem;
+  }
+
+  .crumbs a {
+    color: var(--fog);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--signal);
+  }
+
+  .project-header {
+    padding-bottom: 1.75rem;
+  }
+
+  .project-header h1 {
+    max-width: 24ch;
+  }
+
+  /* Two-column layout: body | hairline | sticky metadata */
+  .project-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 17.5rem;
+    gap: 3.5rem;
+    padding-top: 2.25rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .meta-sidebar-slot {
+    border-left: 1px solid var(--hairline);
+    padding-left: 2.5rem;
+  }
+
+  .meta-sticky {
+    position: sticky;
+    top: 2rem;
+  }
+
+  .meta-strip-slot {
+    display: none;
+  }
+
+  .cover {
+    margin-bottom: 2.5rem;
+  }
+
+  .extra-images {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  /* Below ~900px: single column, metadata as a horizontal strip under the title */
+  @media (max-width: 900px) {
+    .project-columns {
+      grid-template-columns: minmax(0, 1fr);
+      padding-top: 2rem;
+      border-top: 0;
+    }
+
+    .meta-sidebar-slot {
+      display: none;
+    }
+
+    .meta-strip-slot {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  }
+</style>

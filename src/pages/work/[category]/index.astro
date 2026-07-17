@@ -1,0 +1,107 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import FilterBar from "../../../components/FilterBar.astro";
+import ProjectList from "../../../components/ProjectList.astro";
+import { CATEGORIES, categoryBySlug } from "../../../lib/categories";
+
+export function getStaticPaths() {
+  return CATEGORIES.map((category) => ({ params: { category: category.slug } }));
+}
+
+const { category: slug } = Astro.params;
+const category = categoryBySlug(slug!)!;
+
+const projects = (await getCollection("projects"))
+  .filter((p) => p.data.category === category.name)
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const subcategories = [...new Set(projects.map((p) => p.data.subcategory).filter((s): s is string => !!s))].sort();
+const tags = [...new Set(projects.flatMap((p) => p.data.tags))].sort();
+---
+
+<BaseLayout title={`${category.name} — Mårten Wikman`} description={category.blurb}>
+  <nav class="crumbs mono-label" aria-label="Breadcrumb">
+    <a href="/">Home</a> / <span aria-current="page">Work</span>
+  </nav>
+
+  <header class="category-header reveal">
+    <h1>{category.name}</h1>
+    <p class="category-blurb">{category.blurb}</p>
+  </header>
+
+  <nav class="category-switch" aria-label="Categories">
+    {CATEGORIES.map((c) => (
+      <a
+        href={`/work/${c.slug}/`}
+        class="mono switch-link"
+        aria-current={c.slug === category.slug ? "page" : undefined}
+      >
+        {c.name}
+      </a>
+    ))}
+  </nav>
+
+  {projects.length === 0 ? (
+    <p class="empty">No projects in this category yet.</p>
+  ) : (
+    <div class="reveal">
+      <FilterBar subcategories={subcategories} tags={tags} />
+      <ProjectList projects={projects} filterable />
+    </div>
+  )}
+</BaseLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: 2.5rem;
+  }
+
+  .crumbs a {
+    color: var(--fog);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--signal);
+  }
+
+  .category-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding-bottom: 2rem;
+  }
+
+  .category-blurb {
+    color: var(--fog);
+    max-width: 58ch;
+  }
+
+  .category-switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.75rem;
+    padding-block: 1.1rem;
+    border-block: 1px solid var(--hairline);
+  }
+
+  .switch-link {
+    font-size: 0.78rem;
+    color: var(--fog);
+    text-decoration: none;
+  }
+
+  .switch-link:hover {
+    color: var(--paper);
+  }
+
+  .switch-link[aria-current="page"] {
+    color: var(--signal);
+  }
+
+  .empty {
+    margin-top: 2.5rem;
+    color: var(--fog);
+  }
+</style>

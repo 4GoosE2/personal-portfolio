@@ -1,0 +1,62 @@
+# Decap CMS configuration
+#
+# Production backend: GitHub. After pushing this repo to GitHub, replace
+# OWNER/REPO below with the real repository (e.g. martenwikman/portfolio).
+# Authentication runs through Netlify's OAuth provider — see README
+# ("Deployment" section) for the one-time GitHub OAuth app setup.
+#
+# Local editing: run `npx decap-server` alongside `npm run dev`, then open
+# http://localhost:4321/admin/ — local_backend below makes the CMS talk to
+# your local git repo directly, no login needed.
+
+backend:
+  name: github
+  repo: OWNER/REPO
+  branch: main
+  base_url: https://api.netlify.com
+
+local_backend: true
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "projects"
+    label: "Projects"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - "Valuation & Financial Modeling"
+          - "Commercial Due Diligence"
+          - "Market Sizing & Competitive Landscape"
+          - "Data Analytics & BI"
+          - "Growth Strategy & Operations"
+          - "Post-Merger Integration"
+      - { label: "Subcategory", name: "subcategory", widget: "string", required: false }
+      - label: "Tags"
+        name: "tags"
+        widget: "list"
+        default: []
+        field: { label: "Tag", name: "tag", widget: "string" }
+      - { label: "Date / analytical moment", name: "date", widget: "string", hint: "e.g. Mid-2025" }
+      - label: "Key metrics"
+        name: "metrics"
+        widget: "list"
+        required: false
+        summary: "{{fields.label}}: {{fields.value}}"
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - { label: "Value", name: "value", widget: "string" }
+      - { label: "Cover image", name: "cover", widget: "image", required: false }
+      - label: "Additional images"
+        name: "images"
+        widget: "list"
+        required: false
+        field: { label: "Image", name: "image", widget: "image" }
+      - { label: "Body", name: "body", widget: "markdown" }

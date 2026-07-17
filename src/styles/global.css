@@ -1,0 +1,235 @@
+/* ------------------------------------------------------------------ */
+/* Design tokens                                                       */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --ink: #0B1220;
+  --slate: #131B2E;
+  --fog: #8B95A7;
+  --paper: #E8ECF1;
+  --signal: #5EEAD4;
+  --alert: #E8927C;
+
+  --hairline: color-mix(in srgb, var(--fog) 15%, transparent);
+
+  --font-heading: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "Consolas", monospace;
+
+  --measure: 68ch;
+  --space-page: clamp(1.25rem, 4vw, 3rem);
+  --site-max: 72rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Reset & base                                                        */
+/* ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ------------------------------------------------------------------ */
+/* Typography                                                          */
+/* ------------------------------------------------------------------ */
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(1.9rem, 4.5vw, 3rem); }
+h2 { font-size: clamp(1.35rem, 2.5vw, 1.7rem); }
+h3 { font-size: 1.15rem; }
+
+p {
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--paper);
+  text-decoration-color: color-mix(in srgb, var(--fog) 45%, transparent);
+  text-underline-offset: 3px;
+  transition: color 120ms ease, text-decoration-color 120ms ease;
+}
+
+a:hover {
+  color: var(--signal);
+  text-decoration-color: var(--signal);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--signal) 30%, transparent);
+}
+
+/* Monospace label treatment — metadata, tags, dates, numbers */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fog);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Structure — hairlines, page shell                                   */
+/* ------------------------------------------------------------------ */
+
+.page {
+  max-width: var(--site-max);
+  margin-inline: auto;
+  padding-inline: var(--space-page);
+}
+
+.hairline-top { border-top: 1px solid var(--hairline); }
+.hairline-bottom { border-bottom: 1px solid var(--hairline); }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--hairline);
+  margin-block: 3rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Focus & accessibility                                               */
+/* ------------------------------------------------------------------ */
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-page);
+  top: -3rem;
+  z-index: 10;
+  background: var(--ink);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  transition: top 120ms ease;
+}
+
+.skip-link:focus-visible {
+  top: 0.5rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Scroll-in reveal (disabled under reduced motion)                    */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 500ms ease, transform 500ms ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Long-form prose (project write-ups)                                 */
+/* ------------------------------------------------------------------ */
+
+.prose > * + * {
+  margin-top: 1.1em;
+}
+
+.prose h2 {
+  margin-top: 2.6em;
+  padding-top: 1.4em;
+  border-top: 1px solid var(--hairline);
+}
+
+.prose h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose h3 {
+  margin-top: 1.8em;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.4rem;
+  max-width: var(--measure);
+}
+
+.prose blockquote {
+  border-left: 1px solid var(--hairline);
+  padding-left: 1.25rem;
+  color: var(--fog);
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--signal);
+}
+
+.prose table {
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.5rem 1.25rem 0.5rem 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.prose th {
+  color: var(--fog);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}

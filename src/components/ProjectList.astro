@@ -1,0 +1,91 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { categoryByName } from "../lib/categories";
+
+interface Props {
+  projects: CollectionEntry<"projects">[];
+  /** When true, rows carry data-* attributes for the client-side FilterBar. */
+  filterable?: boolean;
+}
+
+const { projects, filterable = false } = Astro.props;
+---
+
+<ul class="project-list">
+  {projects.map((project) => {
+    const category = categoryByName(project.data.category);
+    return (
+      <li
+        class="project-row"
+        data-project={filterable ? "" : undefined}
+        data-subcategory={filterable ? (project.data.subcategory ?? "") : undefined}
+        data-tags={filterable ? project.data.tags.join("|") : undefined}
+      >
+        <div class="row-main">
+          <a href={`/work/${category?.slug}/${project.id}/`} class="row-title">
+            {project.data.title}
+          </a>
+          {project.data.subcategory && (
+            <span class="mono-label">{project.data.subcategory}</span>
+          )}
+        </div>
+        <div class="row-meta">
+          {project.data.tags.length > 0 && (
+            <span class="mono row-tags">{project.data.tags.join(" · ")}</span>
+          )}
+          <span class="mono-label">{project.data.date}</span>
+        </div>
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .project-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .project-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding-block: 1.4rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .project-row:first-child {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .row-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .row-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.15rem;
+    text-decoration: none;
+  }
+
+  .row-title:hover {
+    color: var(--signal);
+  }
+
+  .row-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .row-tags {
+    color: var(--fog);
+    font-size: 0.78rem;
+  }
+</style>
