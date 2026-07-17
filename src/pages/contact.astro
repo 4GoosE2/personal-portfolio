@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Contact — Mårten Wikman">
+  <article class="contact">
+    <header class="reveal">
+      <h1>Contact</h1>
+      <p class="tagline mono-label">Let's connect</p>
+    </header>
+
+    <dl class="contact-list reveal">
+      <div class="contact-item">
+        <dt class="mono-label">Email</dt>
+        <dd><a href="mailto:martenwikman@wikman.se" class="mono">martenwikman@wikman.se</a></dd>
+      </div>
+      <div class="contact-item">
+        <dt class="mono-label">Phone</dt>
+        <dd><a href="tel:+46727468252" class="mono">072-746 82 52</a></dd>
+      </div>
+      <div class="contact-item">
+        <dt class="mono-label">Location</dt>
+        <dd><span class="mono">Vallkivvägen 120, 179, Stenhamra</span></dd>
+      </div>
+    </dl>
+  </article>
+</BaseLayout>
+
+<style>
+  .contact {
+    max-width: 46rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .tagline {
+    margin-top: 0.9rem;
+  }
+
+  .contact-list {
+    margin: 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding-block: 1.4rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .contact-item:last-child {
+    border-bottom: 0;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  dd a {
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  dd a:hover {
+    color: var(--signal);
+  }
+</style>

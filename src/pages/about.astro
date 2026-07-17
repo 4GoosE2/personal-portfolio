@@ -1,68 +1,70 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const highlights = [
+  {
+    title: "Tobii Power BI Report",
+    description: "Designed a full report from scratch during a 20-week internship",
+  },
+  {
+    title: "BI Program Graduate",
+    description: "Nackademin, 12+ courses completed",
+  },
+  {
+    title: "GDPR Certified",
+    description: "Data protection fundamentals",
+  },
+  {
+    title: "International Business Scholar",
+    description: "Coventry University",
+  },
+];
 ---
 
 <BaseLayout title="About — Mårten Wikman">
   <article class="about">
     <header class="reveal">
       <h1>About</h1>
+      <p class="tagline mono-label">Hybrid finance and data profile</p>
     </header>
 
     <section class="reveal">
-      <h2 class="mono-label section-label">Profile</h2>
       <div class="prose">
         <p>
-          I work at the intersection of finance and data. My academic grounding
-          is in strategic management and international business; my practical
-          toolkit is SQL, Python, Power BI, and data modeling. That combination
-          means I can build the analysis myself — from raw data to a defensible
-          valuation or market view — rather than waiting on someone else's
-          spreadsheet.
+          I'm a Business Intelligence Analyst with a passion for transforming
+          complex data into clear, actionable insights. Currently pursuing my
+          BSc (Hons) in International Business Management at FEI in
+          collaboration with Coventry University, I combine academic excellence
+          with hands-on technical expertise.
         </p>
         <p>
-          I'm targeting roles in private equity, M&amp;A advisory, and growth
-          consulting, where that hybrid profile does its best work: commercial
-          questions answered with real data discipline.
+          My journey in business intelligence began at Nackademin, where I
+          completed a comprehensive BI program covering everything from data
+          visualization and SQL to Python and machine learning. During my
+          20-week internship at Tobii, I designed and developed a complete
+          Power BI report from scratch, demonstrating my ability to deliver
+          real-world solutions.
+        </p>
+        <p>
+          I thrive on turning data challenges into opportunities, whether it's
+          building interactive dashboards, optimizing database queries, or
+          uncovering hidden patterns that drive business decisions. With GDPR
+          certification and a strong foundation in business strategy, I bring
+          both technical prowess and business acumen to every project.
         </p>
       </div>
     </section>
 
-    <section class="reveal">
-      <h2 class="mono-label section-label">Dissertation</h2>
-      <div class="prose">
-        <p>
-          My dissertation examined cross-border post-merger integration through
-          Simons' four levers of control — how acquirers balance belief systems,
-          boundary systems, diagnostic controls, and interactive controls when
-          integrating a foreign target. It received a <strong>First Class</strong>{" "}
-          grade and anchors the{" "}
-          <a href="/work/post-merger-integration/">Post-Merger Integration</a>{" "}
-          section of this portfolio.
-        </p>
-      </div>
-    </section>
-
-    <section class="reveal">
-      <h2 class="mono-label section-label">Education</h2>
-      <ul class="edu-list" role="list">
-        <li>
-          <span class="edu-title">BSc International Business Management</span>
-          <span class="mono edu-meta">Coventry University</span>
-        </li>
-        <li>
-          <span class="edu-title">Business Intelligence Analyst</span>
-          <span class="mono edu-meta">Nackademin — Swedish pathway</span>
-        </li>
+    <section class="reveal" aria-labelledby="highlights-heading">
+      <h2 id="highlights-heading" class="mono-label section-label">Certifications &amp; Highlights</h2>
+      <ul class="highlight-list" role="list">
+        {highlights.map((item) => (
+          <li>
+            <span class="highlight-title">{item.title}</span>
+            <span class="highlight-desc">{item.description}</span>
+          </li>
+        ))}
       </ul>
-    </section>
-
-    <section class="reveal">
-      <h2 class="mono-label section-label">Contact</h2>
-      <div class="prose">
-        <p>
-          <a href="mailto:marten@wikman.se" class="mono">marten@wikman.se</a>
-        </p>
-      </div>
     </section>
   </article>
 </BaseLayout>
@@ -75,36 +77,45 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     max-width: 46rem;
   }
 
+  .tagline {
+    margin-top: 0.9rem;
+  }
+
   .about section {
     padding-top: 2rem;
     border-top: 1px solid var(--hairline);
   }
 
   .section-label {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
   }
 
-  .edu-list {
+  .highlight-list {
     list-style: none;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 1.1rem;
   }
 
-  .edu-list li {
+  .highlight-list li {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.3rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--hairline);
   }
 
-  .edu-title {
+  .highlight-list li:last-child {
+    border-bottom: 0;
+  }
+
+  .highlight-title {
     font-family: var(--font-heading);
     font-weight: 600;
   }
 
-  .edu-meta {
+  .highlight-desc {
     color: var(--fog);
-    font-size: 0.8rem;
+    font-size: 0.95rem;
   }
 </style>

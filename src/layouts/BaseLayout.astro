@@ -1,11 +1,11 @@
 ---
-import "@fontsource/space-grotesk/500.css";
-import "@fontsource/space-grotesk/600.css";
-import "@fontsource/space-grotesk/700.css";
-import "@fontsource/ibm-plex-sans/400.css";
-import "@fontsource/ibm-plex-sans/400-italic.css";
-import "@fontsource/ibm-plex-sans/500.css";
-import "@fontsource/ibm-plex-sans/600.css";
+import "@fontsource/fraunces/500.css";
+import "@fontsource/fraunces/600.css";
+import "@fontsource/fraunces/700.css";
+import "@fontsource/source-serif-4/400.css";
+import "@fontsource/source-serif-4/400-italic.css";
+import "@fontsource/source-serif-4/500.css";
+import "@fontsource/source-serif-4/600.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "../styles/global.css";
@@ -22,6 +22,10 @@ const nav = [
   { href: "/", label: "Home" },
   { href: "/work/valuation-financial-modeling/", label: "Work", match: "/work" },
   { href: "/about/", label: "About" },
+  { href: "/skills/", label: "Skills" },
+  { href: "/experience/", label: "Experience" },
+  { href: "/education/", label: "Education" },
+  { href: "/contact/", label: "Contact" },
 ];
 
 const isActive = (item: (typeof nav)[number]) =>
@@ -102,7 +106,8 @@ const isActive = (item: (typeof nav)[number]) =>
 
   nav {
     display: flex;
-    gap: 1.75rem;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.5rem;
   }
 
   nav a {

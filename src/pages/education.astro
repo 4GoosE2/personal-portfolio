@@ -1,0 +1,151 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const entries = [
+  {
+    title: "BSc (Hons) International Business Management (Top-up)",
+    org: "FEI in collaboration with Coventry University",
+    body: "Currently pursuing advanced business management studies with a focus on international perspectives, developing strategic thinking and global business acumen.",
+    tags: [
+      "Accounting and Finance",
+      "Business and Sustainability",
+      "Business Data Analysis",
+      "International Marketing",
+      "Organisation Behaviour and Leadership",
+      "Strategic Management",
+      "Dissertation",
+    ],
+  },
+  {
+    title: "Business Intelligence Program",
+    org: "Nackademin, Stockholm",
+    body: "Comprehensive BI program including a 20-week internship at Tobii. Gained hands-on experience in data analytics, visualization, and business intelligence tools.",
+    tags: [
+      "Power BI",
+      "Data Visualization",
+      "SQL & Database Design",
+      "Python Programming",
+      "Machine Learning",
+      "Advanced Analytics",
+      "BI Strategy",
+      "Data Warehousing",
+    ],
+  },
+];
+---
+
+<BaseLayout title="Education — Mårten Wikman">
+  <article class="education">
+    <header class="reveal">
+      <h1>Education</h1>
+      <p class="tagline mono-label">Academic Background</p>
+    </header>
+
+    <ol class="timeline reveal" role="list">
+      {entries.map((entry) => (
+        <li class="entry">
+          <span class="dot" aria-hidden="true"></span>
+          <div class="entry-body">
+            <h2 class="entry-title">{entry.title}</h2>
+            <span class="mono entry-org">{entry.org}</span>
+            <p>{entry.body}</p>
+            <ul class="tag-list" role="list">
+              {entry.tags.map((tag) => (
+                <li class="pill mono">{tag}</li>
+              ))}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </article>
+</BaseLayout>
+
+<style>
+  .education {
+    max-width: 46rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .tagline {
+    margin-top: 0.9rem;
+  }
+
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  /* Thin vertical rule connecting the timeline */
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 0.3125rem;
+    top: 2.5rem;
+    bottom: 1.5rem;
+    width: 1px;
+    background: var(--rule);
+  }
+
+  .entry {
+    position: relative;
+    padding-left: 2.25rem;
+    padding-block: 1rem 2.5rem;
+  }
+
+  .entry:last-child {
+    padding-bottom: 0.5rem;
+  }
+
+  .dot {
+    position: absolute;
+    left: 0;
+    top: 1.55rem;
+    width: 0.6875rem;
+    height: 0.6875rem;
+    border-radius: 50%;
+    background: var(--signal);
+  }
+
+  .entry-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .entry-title {
+    font-size: 1.2rem;
+  }
+
+  .entry-org {
+    color: var(--fog);
+    font-size: 0.8rem;
+  }
+
+  .entry-body p {
+    max-width: var(--measure);
+  }
+
+  .tag-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .pill {
+    font-size: 0.72rem;
+    color: var(--fog);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+  }
+</style>

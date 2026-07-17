@@ -1,0 +1,93 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const roles = [
+  {
+    title: "Business Intelligence Intern",
+    org: "Tobii, Stockholm",
+    span: "20 weeks",
+    body: "Designed and developed a comprehensive Power BI report from scratch during my internship at Tobii. Applied data visualization best practices and business intelligence methodologies to deliver actionable insights. Collaborated with stakeholders to understand requirements and deliver solutions that met business objectives.",
+  },
+  {
+    title: "Project Leader",
+    org: "Input Interiör, Stockholm",
+    span: "Full-time",
+    body: "Led furniture assembly projects and coordinated team efforts to ensure timely delivery. Developed strong project management and leadership skills while maintaining high quality standards and customer satisfaction.",
+  },
+  {
+    title: "Delivery Specialist",
+    org: "RealHuvA8, Stockholm",
+    span: "Work on demand",
+    body: "Executed efficient package delivery operations with focus on time management and route optimization. Demonstrated reliability and adaptability in a fast-paced environment.",
+  },
+];
+---
+
+<BaseLayout title="Experience — Mårten Wikman">
+  <article class="experience">
+    <header class="reveal">
+      <h1>Experience</h1>
+      <p class="tagline mono-label">Professional Experience</p>
+    </header>
+
+    <ul class="role-list reveal" role="list">
+      {roles.map((role) => (
+        <li class="role">
+          <div class="role-head">
+            <h2 class="role-title">{role.title}</h2>
+            <span class="mono role-meta">{role.org} — {role.span}</span>
+          </div>
+          <p class="role-body">{role.body}</p>
+        </li>
+      ))}
+    </ul>
+  </article>
+</BaseLayout>
+
+<style>
+  .experience {
+    max-width: 46rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .tagline {
+    margin-top: 0.9rem;
+  }
+
+  .role-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .role {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding-block: 2.25rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .role-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .role-title {
+    font-size: 1.2rem;
+  }
+
+  .role-meta {
+    color: var(--fog);
+    font-size: 0.8rem;
+  }
+
+  .role-body {
+    max-width: var(--measure);
+  }
+</style>

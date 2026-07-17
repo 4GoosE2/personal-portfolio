@@ -1,0 +1,99 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const skills = [
+  { name: "Python", level: 80 },
+  { name: "Data Visualization", level: 85 },
+  { name: "Power BI", level: 80 },
+  { name: "Analytics", level: 75 },
+  { name: "SQL", level: 70 },
+  { name: "Machine Learning", level: 65 },
+];
+---
+
+<BaseLayout title="Skills — Mårten Wikman">
+  <article class="skills">
+    <header class="reveal">
+      <h1>Skills</h1>
+      <p class="tagline mono-label">Technical Proficiency</p>
+    </header>
+
+    <ul class="skill-list reveal" role="list">
+      {skills.map((skill) => (
+        <li class="skill">
+          <div class="skill-head">
+            <span class="skill-name">{skill.name}</span>
+            <span class="mono skill-value">{skill.level}%</span>
+          </div>
+          <div
+            class="bar"
+            role="meter"
+            aria-valuenow={skill.level}
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label={`${skill.name} proficiency`}
+          >
+            <div class="bar-fill" style={`width: ${skill.level}%`}></div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </article>
+</BaseLayout>
+
+<style>
+  .skills {
+    max-width: 46rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .tagline {
+    margin-top: 0.9rem;
+  }
+
+  .skill-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.9rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .skill {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .skill-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .skill-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+  }
+
+  .skill-value {
+    color: var(--fog);
+    font-size: 0.8rem;
+  }
+
+  .bar {
+    height: 3px;
+    background: var(--rule);
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: var(--signal);
+  }
+</style>

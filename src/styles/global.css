@@ -3,17 +3,17 @@
 /* ------------------------------------------------------------------ */
 
 :root {
-  --ink: #0B1220;
-  --slate: #131B2E;
-  --fog: #8B95A7;
-  --paper: #E8ECF1;
-  --signal: #5EEAD4;
-  --alert: #E8927C;
+  --ink: #14202E;
+  --paper: #F2EFE6;
+  --fog: #6E6A5C;
+  --rule: #D8D2C2;
+  --signal: #8A6D2F;
+  --alert: #7A2E32;
 
-  --hairline: color-mix(in srgb, var(--fog) 15%, transparent);
+  --hairline: var(--rule);
 
-  --font-heading: "Space Grotesk", "Segoe UI", sans-serif;
-  --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-heading: "Fraunces", "Georgia", serif;
+  --font-body: "Source Serif 4", "Georgia", serif;
   --font-mono: "IBM Plex Mono", "Consolas", monospace;
 
   --measure: 68ch;
@@ -33,7 +33,7 @@
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
   scroll-behavior: smooth;
 }
 
@@ -44,8 +44,8 @@ html {
 }
 
 body {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-body);
   font-size: 1.0625rem;
   line-height: 1.65;
@@ -66,8 +66,8 @@ img {
 h1, h2, h3, h4 {
   font-family: var(--font-heading);
   font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
   text-wrap: balance;
 }
 
@@ -80,7 +80,7 @@ p {
 }
 
 a {
-  color: var(--paper);
+  color: var(--ink);
   text-decoration-color: color-mix(in srgb, var(--fog) 45%, transparent);
   text-underline-offset: 3px;
   transition: color 120ms ease, text-decoration-color 120ms ease;
@@ -143,7 +143,7 @@ hr {
   left: var(--space-page);
   top: -3rem;
   z-index: 10;
-  background: var(--ink);
+  background: var(--paper);
   padding: 0.5rem 0.75rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
