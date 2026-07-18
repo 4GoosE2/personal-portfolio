@@ -20,6 +20,40 @@ media_folder: "public/uploads"
 public_folder: "/uploads"
 
 collections:
+  # Categories and the subcategory suggestion list live here so both can be
+  # edited without touching code. The site reads the same file via
+  # src/lib/categories.ts.
+  - name: "settings"
+    label: "Settings"
+    files:
+      - name: "taxonomy"
+        label: "Categories & Subcategories"
+        file: "src/data/taxonomy.json"
+        fields:
+          - label: "Categories"
+            name: "categories"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - label: "Description"
+                name: "blurb"
+                widget: "text"
+                hint: "One line, shown under the category on the home and category pages."
+              - label: "URL slug"
+                name: "slug"
+                widget: "string"
+                required: false
+                hint: "Leave blank to generate from the name. Only set this to keep an existing URL after renaming."
+          - label: "Subcategories"
+            name: "subcategories"
+            widget: "list"
+            required: false
+            summary: "{{fields.name}}"
+            hint: "The suggestions offered when tagging a project with a subcategory. Add a new one here first, then pick it on the project."
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+
   - name: "projects"
     label: "Projects"
     folder: "src/content/projects"
@@ -29,15 +63,22 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - label: "Category"
         name: "category"
-        widget: "select"
-        options:
-          - "Valuation & Financial Modeling"
-          - "Commercial Due Diligence"
-          - "Market Sizing & Competitive Landscape"
-          - "Data Analytics & BI"
-          - "Growth Strategy & Operations"
-          - "Post-Merger Integration"
-      - { label: "Subcategory", name: "subcategory", widget: "string", required: false }
+        widget: "relation"
+        collection: "settings"
+        file: "taxonomy"
+        search_fields: ["categories.*.name"]
+        value_field: "categories.*.name"
+        display_fields: ["categories.*.name"]
+      - label: "Subcategory"
+        name: "subcategory"
+        widget: "relation"
+        required: false
+        collection: "settings"
+        file: "taxonomy"
+        search_fields: ["subcategories.*.name"]
+        value_field: "subcategories.*.name"
+        display_fields: ["subcategories.*.name"]
+        hint: "Start typing to filter. To use a new one, add it under Settings first."
       - label: "Tags"
         name: "tags"
         widget: "list"

@@ -1,0 +1,37 @@
+{
+  "categories": [
+    {
+      "name": "Valuation & Financial Modeling",
+      "blurb": "DCF and multiples-based valuations, operating models, and investment memos.",
+      "slug": "valuation-financial-modeling"
+    },
+    {
+      "name": "Commercial Due Diligence",
+      "blurb": "Market attractiveness, competitive position, and revenue-quality assessments.",
+      "slug": "commercial-due-diligence"
+    },
+    {
+      "name": "Market Sizing & Competitive Landscape",
+      "blurb": "TAM/SAM/SOM builds, segmentation, and competitor mapping.",
+      "slug": "market-sizing-competitive-landscape"
+    },
+    {
+      "name": "Data Analytics & BI",
+      "blurb": "SQL, Python, and Power BI work — data models, dashboards, and analysis pipelines.",
+      "slug": "data-analytics-bi"
+    },
+    {
+      "name": "Growth Strategy & Operations",
+      "blurb": "Go-to-market plans, pricing, and operational improvement cases.",
+      "slug": "growth-strategy-operations"
+    },
+    {
+      "name": "Post-Merger Integration",
+      "blurb": "Integration planning and management control — grounded in First Class dissertation research.",
+      "slug": "post-merger-integration"
+    }
+  ],
+  "subcategories": [
+    { "name": "Growth Equity" }
+  ]
+}

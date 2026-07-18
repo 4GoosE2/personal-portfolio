@@ -1,43 +1,34 @@
+import taxonomy from "../data/taxonomy.json";
+
 export interface Category {
   name: string;
   slug: string;
   blurb: string;
 }
 
-export const CATEGORIES: Category[] = [
-  {
-    name: "Valuation & Financial Modeling",
-    slug: "valuation-financial-modeling",
-    blurb: "DCF and multiples-based valuations, operating models, and investment memos.",
-  },
-  {
-    name: "Commercial Due Diligence",
-    slug: "commercial-due-diligence",
-    blurb: "Market attractiveness, competitive position, and revenue-quality assessments.",
-  },
-  {
-    name: "Market Sizing & Competitive Landscape",
-    slug: "market-sizing-competitive-landscape",
-    blurb: "TAM/SAM/SOM builds, segmentation, and competitor mapping.",
-  },
-  {
-    name: "Data Analytics & BI",
-    slug: "data-analytics-bi",
-    blurb: "SQL, Python, and Power BI work — data models, dashboards, and analysis pipelines.",
-  },
-  {
-    name: "Growth Strategy & Operations",
-    slug: "growth-strategy-operations",
-    blurb: "Go-to-market plans, pricing, and operational improvement cases.",
-  },
-  {
-    name: "Post-Merger Integration",
-    slug: "post-merger-integration",
-    blurb: "Integration planning and management control — grounded in First Class dissertation research.",
-  },
-];
+/** Lowercase, strip punctuation, collapse runs of non-alphanumerics to "-". */
+export function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/**
+ * Categories are edited in the CMS (Settings → Categories & Subcategories),
+ * which writes src/data/taxonomy.json. Slug is optional there: leaving it
+ * blank derives one from the name, so a new category needs no URL knowledge.
+ */
+export const CATEGORIES: Category[] = taxonomy.categories.map((c) => ({
+  name: c.name,
+  blurb: c.blurb ?? "",
+  slug: c.slug?.trim() ? c.slug.trim() : slugify(c.name),
+}));
 
 export const CATEGORY_NAMES = CATEGORIES.map((c) => c.name) as [string, ...string[]];
+
+/** Subcategory suggestions offered in the CMS; free text is still valid. */
+export const SUBCATEGORIES: string[] = (taxonomy.subcategories ?? []).map((s) => s.name);
 
 export function categoryBySlug(slug: string): Category | undefined {
   return CATEGORIES.find((c) => c.slug === slug);

@@ -43,8 +43,8 @@ Create `src/content/projects/<your-slug>.md`. The filename becomes the URL slug
 ```markdown
 ---
 title: "Project Title"
-category: "Valuation & Financial Modeling"   # must match one of the 6 fixed categories
-subcategory: "Growth Equity"                  # optional, free text
+category: "Valuation & Financial Modeling"   # must match a name in src/data/taxonomy.json
+subcategory: "Growth Equity"                  # optional
 tags: [SaaS, Series B]
 date: "Mid-2025"
 metrics:
@@ -59,11 +59,31 @@ images: ["/uploads/extra.png"]                # optional
 Body text in Markdown…
 ```
 
-The six valid categories are defined in `src/lib/categories.ts` and mirrored in
-`public/admin/config.yml` — if you ever change them, update both files.
-
 The first metric in the list is rendered as the page's single standout figure
-(clay/`--alert` color), so put the headline number first.
+(oxblood/`--alert` color), so put the headline number first.
+
+## Categories and subcategories
+
+Both live in `src/data/taxonomy.json` and are edited from the CMS under
+**Settings → Categories & Subcategories** — no code change needed.
+
+**Categories** need a name and a description. The URL slug is optional: leave it
+blank and one is generated from the name ("ESG & Impact Analysis" →
+`/portfolio/esg-impact-analysis/`). Only set a slug explicitly to keep an
+existing URL after renaming a category. Adding one creates its page, its slot on
+the home page, and its entry in the category switcher automatically.
+
+**Subcategories** are a suggestion list. On a project, the Subcategory field is
+a searchable dropdown of these values, so the same subcategory is always spelled
+the same way and its filter chips group correctly. To use a new one, add it
+under Settings first, then pick it on the project.
+
+Two things to know:
+
+- Deleting a category that projects still reference **fails the build** with a
+  schema error naming the offending value. Repoint those projects first.
+- Renaming a category changes its URL unless you pin the old slug, and every
+  project referencing the old name must be updated to match.
 
 ## Deployment (Netlify)
 
