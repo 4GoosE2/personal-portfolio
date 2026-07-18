@@ -100,6 +100,30 @@ const { Content } = await render(project);
   .meta-sticky {
     position: sticky;
     top: 2rem;
+    /* A panel taller than the viewport would otherwise have its lower half
+       permanently out of reach, so it scrolls within itself. Short panels are
+       unaffected — overflow: auto only engages once the cap is hit. */
+    max-height: calc(100vh - 4rem);
+    max-height: calc(100dvh - 4rem);
+    overflow-y: auto;
+    /* Keeps focus rings on the tag/origin links from being clipped. */
+    padding-right: 0.5rem;
+    margin-right: -0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule) transparent;
+  }
+
+  .meta-sticky::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .meta-sticky::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .meta-sticky::-webkit-scrollbar-thumb {
+    background: var(--rule);
+    border-radius: 3px;
   }
 
   .meta-strip-slot {
