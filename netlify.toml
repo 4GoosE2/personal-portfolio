@@ -4,3 +4,17 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# The /work/ section was renamed to /portfolio/. force = true makes Netlify
+# issue a real 301 instead of serving Astro's generated meta-refresh pages.
+[[redirects]]
+  from = "/work/*"
+  to = "/portfolio/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/work"
+  to = "/portfolio/valuation-financial-modeling"
+  status = 301
+  force = true

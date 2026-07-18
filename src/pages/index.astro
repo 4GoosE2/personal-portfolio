@@ -31,12 +31,12 @@ const featuredCategory = featured ? categoryByName(featured.data.category) : und
     />
   </section>
 
-  <section class="categories reveal" aria-labelledby="work-heading">
-    <h2 id="work-heading" class="section-heading mono-label">Work</h2>
+  <section class="categories reveal" aria-labelledby="portfolio-heading">
+    <h2 id="portfolio-heading" class="section-heading mono-label">Portfolio</h2>
     <ul class="category-grid" role="list">
       {CATEGORIES.map((category) => (
         <li class="category-item">
-          <a href={`/work/${category.slug}/`} class="category-link">
+          <a href={`/portfolio/${category.slug}/`} class="category-link">
             <span class="category-name">{category.name}</span>
             <span class="mono-label category-count">
               {countFor(category.name)} {countFor(category.name) === 1 ? "project" : "projects"}
@@ -51,7 +51,7 @@ const featuredCategory = featured ? categoryByName(featured.data.category) : und
   {featured && featuredCategory && (
     <section class="featured reveal" aria-labelledby="featured-heading">
       <h2 id="featured-heading" class="section-heading mono-label">Featured case study</h2>
-      <a href={`/work/${featuredCategory.slug}/${featured.id}/`} class="featured-link">
+      <a href={`/portfolio/${featuredCategory.slug}/${featured.id}/`} class="featured-link">
         {featured.data.title}
       </a>
       <p class="featured-sub">

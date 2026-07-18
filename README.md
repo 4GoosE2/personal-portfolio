@@ -38,7 +38,7 @@ Other commands: `npm run build` (production build to `dist/`), `npm run preview`
 ### Manually
 
 Create `src/content/projects/<your-slug>.md`. The filename becomes the URL slug
-(`/work/<category-slug>/<your-slug>/`). Frontmatter:
+(`/portfolio/<category-slug>/<your-slug>/`). Frontmatter:
 
 ```markdown
 ---

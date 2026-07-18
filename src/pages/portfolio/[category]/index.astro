@@ -22,7 +22,7 @@ const tags = [...new Set(projects.flatMap((p) => p.data.tags))].sort();
 
 <BaseLayout title={`${category.name} — Mårten Wikman`} description={category.blurb}>
   <nav class="crumbs mono-label" aria-label="Breadcrumb">
-    <a href="/">Home</a> / <span aria-current="page">Work</span>
+    <a href="/">Home</a> / <span aria-current="page">Portfolio</span>
   </nav>
 
   <header class="category-header reveal">
@@ -33,7 +33,7 @@ const tags = [...new Set(projects.flatMap((p) => p.data.tags))].sort();
   <nav class="category-switch" aria-label="Categories">
     {CATEGORIES.map((c) => (
       <a
-        href={`/work/${c.slug}/`}
+        href={`/portfolio/${c.slug}/`}
         class="mono switch-link"
         aria-current={c.slug === category.slug ? "page" : undefined}
       >

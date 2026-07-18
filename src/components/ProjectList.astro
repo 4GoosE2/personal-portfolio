@@ -22,7 +22,7 @@ const { projects, filterable = false } = Astro.props;
         data-tags={filterable ? project.data.tags.join("|") : undefined}
       >
         <div class="row-main">
-          <a href={`/work/${category?.slug}/${project.id}/`} class="row-title">
+          <a href={`/portfolio/${category?.slug}/${project.id}/`} class="row-title">
             {project.data.title}
           </a>
           {project.data.subcategory && (

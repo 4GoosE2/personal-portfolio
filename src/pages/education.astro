@@ -1,11 +1,28 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const entries = [
+interface Course {
+  name: string;
+  grade?: string;
+  /** Highlights the one grade being called out (rendered in --alert). */
+  standout?: boolean;
+}
+
+interface Entry {
+  id: string;
+  title: string;
+  org: string;
+  body: string;
+  tags: string[];
+  courses: Course[];
+}
+
+const entries: Entry[] = [
   {
+    id: "coventry",
     title: "BSc (Hons) International Business Management (Top-up)",
     org: "FEI in collaboration with Coventry University",
-    body: "Currently pursuing advanced business management studies with a focus on international perspectives, developing strategic thinking and global business acumen.",
+    body: "Advanced business management studies with a focus on international perspectives, developing strategic thinking and global business acumen.",
     tags: [
       "Accounting and Finance",
       "Business and Sustainability",
@@ -15,8 +32,18 @@ const entries = [
       "Strategic Management",
       "Dissertation",
     ],
+    courses: [
+      { name: "Accounting and Finance" },
+      { name: "Business and Sustainability" },
+      { name: "Business Data Analysis" },
+      { name: "Dissertation", grade: "First Class (70)", standout: true },
+      { name: "International Marketing" },
+      { name: "Organisational Behaviour and Leadership in an International Context" },
+      { name: "Strategic Management" },
+    ],
   },
   {
+    id: "nackademin",
     title: "Business Intelligence Program",
     org: "Nackademin, Stockholm",
     body: "Comprehensive BI program including a 20-week internship at Tobii. Gained hands-on experience in data analytics, visualization, and business intelligence tools.",
@@ -29,6 +56,22 @@ const entries = [
       "Advanced Analytics",
       "BI Strategy",
       "Data Warehousing",
+    ],
+    courses: [
+      { name: "Statistik och dataanalys", grade: "VG" },
+      { name: "Systemförståelse och verksamhetsprocesser inom BI", grade: "VG" },
+      { name: "Databasdesign och modellering", grade: "G" },
+      { name: "SQL", grade: "VG" },
+      { name: "Datafångst, migrering och förädling", grade: "G" },
+      { name: "Business Intelligence relaterade programspråk", grade: "G" },
+      { name: "Avancerad analys", grade: "G" },
+      { name: "Statistisk programmering och maskininlärning", grade: "G" },
+      { name: "Datavisualisering", grade: "G" },
+      { name: "Examensarbete", grade: "VG" },
+      { name: "LIA", grade: "VG" },
+      { name: "Affärsmannaskap", grade: "VG" },
+      { name: "Business Intelligence och dess affärsmöjligheter", grade: "VG" },
+      { name: "Strömmande data och molnlösningar", grade: "VG" },
     ],
   },
 ];
@@ -44,9 +87,27 @@ const entries = [
     <ol class="timeline reveal" role="list">
       {entries.map((entry) => (
         <li class="entry">
-          <span class="dot" aria-hidden="true"></span>
+          <button
+            type="button"
+            class="dot"
+            data-toggle={entry.id}
+            aria-expanded="false"
+            aria-controls={`courses-${entry.id}`}
+            aria-label={`Show courses for ${entry.title}`}
+          ></button>
           <div class="entry-body">
-            <h2 class="entry-title">{entry.title}</h2>
+            <h2 class="entry-title">
+              <button
+                type="button"
+                class="title-toggle"
+                data-toggle={entry.id}
+                aria-expanded="false"
+                aria-controls={`courses-${entry.id}`}
+              >
+                {entry.title}
+                <span class="mono toggle-hint" aria-hidden="true">Courses</span>
+              </button>
+            </h2>
             <span class="mono entry-org">{entry.org}</span>
             <p>{entry.body}</p>
             <ul class="tag-list" role="list">
@@ -54,12 +115,91 @@ const entries = [
                 <li class="pill mono">{tag}</li>
               ))}
             </ul>
+
+            <div class="courses" id={`courses-${entry.id}`} data-panel={entry.id} hidden>
+              <div class="courses-inner">
+                <ul class="course-list" role="list">
+                  {entry.courses.map((course) => (
+                    <li class="course">
+                      <span class="course-name">{course.name}</span>
+                      {course.grade && (
+                        <span class={`mono course-grade ${course.standout ? "standout" : ""}`}>
+                          {course.grade}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </li>
       ))}
     </ol>
   </article>
 </BaseLayout>
+
+<script>
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll<HTMLElement>("[data-panel]").forEach((panel) => {
+    const id = panel.dataset.panel;
+    const triggers = Array.from(
+      document.querySelectorAll<HTMLButtonElement>(`[data-toggle="${id}"]`)
+    );
+
+    const setExpanded = (open: boolean) => {
+      triggers.forEach((t) => t.setAttribute("aria-expanded", String(open)));
+      panel.classList.toggle("is-open", open);
+    };
+
+    const open = () => {
+      panel.hidden = false;
+      setExpanded(true);
+      if (prefersReduced) {
+        panel.style.height = "auto";
+        return;
+      }
+      const target = panel.scrollHeight;
+      panel.style.height = "0px";
+      // Force layout so the browser registers the starting height.
+      void panel.offsetHeight;
+      panel.style.height = `${target}px`;
+      panel.addEventListener(
+        "transitionend",
+        () => {
+          if (panel.classList.contains("is-open")) panel.style.height = "auto";
+        },
+        { once: true }
+      );
+    };
+
+    const close = () => {
+      setExpanded(false);
+      if (prefersReduced) {
+        panel.hidden = true;
+        return;
+      }
+      panel.style.height = `${panel.scrollHeight}px`;
+      void panel.offsetHeight;
+      panel.style.height = "0px";
+      panel.addEventListener(
+        "transitionend",
+        () => {
+          if (!panel.classList.contains("is-open")) panel.hidden = true;
+        },
+        { once: true }
+      );
+    };
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        if (panel.classList.contains("is-open")) close();
+        else open();
+      });
+    });
+  });
+</script>
 
 <style>
   .education {
@@ -109,8 +249,17 @@ const entries = [
     top: 1.55rem;
     width: 0.6875rem;
     height: 0.6875rem;
+    padding: 0;
+    border: 0;
     border-radius: 50%;
     background: var(--signal);
+    cursor: pointer;
+    transition: box-shadow 150ms ease;
+  }
+
+  .dot:hover,
+  .dot[aria-expanded="true"] {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--signal) 22%, transparent);
   }
 
   .entry-body {
@@ -123,9 +272,40 @@ const entries = [
     font-size: 1.2rem;
   }
 
-  .entry-org {
+  .title-toggle {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+  }
+
+  .title-toggle:hover {
+    color: var(--signal);
+  }
+
+  .toggle-hint {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--fog);
-    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .toggle-hint::after {
+    content: " +";
+  }
+
+  .title-toggle[aria-expanded="true"] .toggle-hint::after {
+    content: " −";
   }
 
   .entry-body p {
@@ -147,5 +327,55 @@ const entries = [
     border: 1px solid var(--rule);
     border-radius: 999px;
     padding: 0.25rem 0.7rem;
+  }
+
+  /* Accordion panel */
+  .courses {
+    height: 0;
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .courses {
+      transition: height 320ms ease;
+    }
+  }
+
+  .courses-inner {
+    padding-top: 1.4rem;
+  }
+
+  .course-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .course {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.6rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .course:first-child {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .course-name {
+    font-size: 0.95rem;
+  }
+
+  .course-grade {
+    font-size: 0.78rem;
+    color: var(--fog);
+    flex-shrink: 0;
+  }
+
+  .course-grade.standout {
+    color: var(--alert);
+    font-weight: 500;
   }
 </style>
