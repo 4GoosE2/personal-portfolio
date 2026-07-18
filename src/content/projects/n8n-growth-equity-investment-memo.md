@@ -9,6 +9,10 @@ tags:
   - Automation
   - Workflow Tools
 date: "Mid-2025"
+note: >-
+  Placeholder — replace this with your own note: why you took this project on,
+  whether it was coursework or self-directed, and anything a reader should know
+  before diving into the analysis.
 metrics:
   - label: "Market size"
     value: "$23.77bn"

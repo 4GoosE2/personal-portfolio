@@ -10,6 +10,7 @@ const projects = defineCollection({
     subcategory: z.string().optional(),
     tags: z.array(z.string()).default([]),
     date: z.string(),
+    note: z.string().optional(),
     metrics: z
       .array(z.object({ label: z.string(), value: z.string() }))
       .default([]),

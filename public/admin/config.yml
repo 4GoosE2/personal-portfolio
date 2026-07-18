@@ -44,6 +44,11 @@ collections:
         default: []
         field: { label: "Tag", name: "tag", widget: "string" }
       - { label: "Date / analytical moment", name: "date", widget: "string", hint: "e.g. Mid-2025" }
+      - label: "About this project"
+        name: "note"
+        widget: "text"
+        required: false
+        hint: "Shown in the sticky panel: why you took this on, what it was for, anything a reader should know first."
       - label: "Key metrics"
         name: "metrics"
         widget: "list"

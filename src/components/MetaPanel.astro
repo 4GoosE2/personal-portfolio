@@ -8,10 +8,17 @@ interface Props {
 }
 
 const { project, variant } = Astro.props;
-const { category, subcategory, tags, date, metrics } = project.data;
+const { category, subcategory, tags, date, metrics, note } = project.data;
 ---
 
 <aside class={`meta-panel meta-${variant}`} aria-label="Project metadata">
+  {note && (
+    <div class="meta-item meta-note">
+      <span class="mono-label">About this project</span>
+      <p class="note-text">{note}</p>
+    </div>
+  )}
+
   <div class="meta-item">
     <span class="mono-label">Category</span>
     <span class="mono">{category}</span>
@@ -68,6 +75,19 @@ const { category, subcategory, tags, date, metrics } = project.data;
     gap: 0.45rem;
   }
 
+  /* Longer-form note: body type, and it gets a rule beneath to separate it
+     from the scannable metadata that follows. */
+  .note-text {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    max-width: 44ch;
+  }
+
+  .meta-note {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+
   .tag-list {
     list-style: none;
     padding: 0;
@@ -122,5 +142,13 @@ const { category, subcategory, tags, date, metrics } = project.data;
   .meta-strip .metric {
     gap: 0.6rem;
     justify-content: flex-start;
+  }
+
+  /* The note is prose, so it spans the full strip rather than sitting in
+     the metadata row. */
+  .meta-strip .meta-note {
+    flex-basis: 100%;
+    padding-bottom: 0;
+    border-bottom: 0;
   }
 </style>
