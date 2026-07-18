@@ -3,6 +3,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 interface Course {
   name: string;
+  /** Assessment breakdown, shown small beneath the course name. */
+  breakdown?: string;
   grade?: string;
   /** Highlights the one grade being called out (rendered in --alert). */
   standout?: boolean;
@@ -15,13 +17,14 @@ interface Entry {
   body: string;
   tags: string[];
   courses: Course[];
+  footnote?: string;
 }
 
 const entries: Entry[] = [
   {
     id: "coventry",
     title: "BSc (Hons) International Business Management (Top-up)",
-    org: "FEI in collaboration with Coventry University",
+    org: "Coventry University in collaboration with FEI",
     body: "Advanced business management studies with a focus on international perspectives, developing strategic thinking and global business acumen.",
     tags: [
       "Accounting and Finance",
@@ -33,14 +36,44 @@ const entries: Entry[] = [
       "Dissertation",
     ],
     courses: [
-      { name: "Accounting and Finance" },
-      { name: "Business and Sustainability" },
-      { name: "Business Data Analysis" },
-      { name: "Dissertation", grade: "First Class (70)", standout: true },
-      { name: "International Marketing" },
-      { name: "Organisational Behaviour and Leadership in an International Context" },
-      { name: "Strategic Management" },
+      {
+        name: "Accounting and Finance",
+        breakdown: "Coursework 70% → 41 · Exam 30% → 72",
+        grade: "50",
+      },
+      {
+        name: "Business and Sustainability",
+        breakdown: "Coursework 100% → 64 (late)",
+        grade: "64",
+      },
+      {
+        name: "Business Data Analysis",
+        breakdown: "Dissertation proposal 100% → 66",
+        grade: "66*",
+      },
+      {
+        name: "Dissertation",
+        breakdown: "100% → 70",
+        grade: "First Class (70)",
+        standout: true,
+      },
+      {
+        name: "International Marketing",
+        breakdown: "Case study 40% → 60 · Presentation 10% → 80 · Exam 50% → 75",
+        grade: "69.5",
+      },
+      {
+        name: "Organisational Behaviour and Leadership in an International Context",
+        breakdown: "Coursework 50% → 71 · Exam 50% → 70",
+        grade: "70.5",
+      },
+      {
+        name: "Strategic Management",
+        breakdown: "Individual report 40% → 58 · Group presentation 10% → 68 · Exam 50% → 56",
+        grade: "58",
+      },
     ],
+    footnote: "* Business Data Analysis was assessed via the dissertation proposal.",
   },
   {
     id: "nackademin",
@@ -58,21 +91,22 @@ const entries: Entry[] = [
       "Data Warehousing",
     ],
     courses: [
-      { name: "Statistik och dataanalys", grade: "VG" },
-      { name: "Systemförståelse och verksamhetsprocesser inom BI", grade: "VG" },
-      { name: "Databasdesign och modellering", grade: "G" },
+      { name: "Statistics and Data Analysis", grade: "VG" },
+      { name: "Systems Understanding and Business Processes in BI", grade: "VG" },
+      { name: "Database Design and Modeling", grade: "G" },
       { name: "SQL", grade: "VG" },
-      { name: "Datafångst, migrering och förädling", grade: "G" },
-      { name: "Business Intelligence relaterade programspråk", grade: "G" },
-      { name: "Avancerad analys", grade: "G" },
-      { name: "Statistisk programmering och maskininlärning", grade: "G" },
-      { name: "Datavisualisering", grade: "G" },
-      { name: "Examensarbete", grade: "VG" },
-      { name: "LIA", grade: "VG" },
-      { name: "Affärsmannaskap", grade: "VG" },
-      { name: "Business Intelligence och dess affärsmöjligheter", grade: "VG" },
-      { name: "Strömmande data och molnlösningar", grade: "VG" },
+      { name: "Data Capture, Migration and Transformation", grade: "G" },
+      { name: "Business Intelligence Programming Languages", grade: "G" },
+      { name: "Advanced Analytics", grade: "G" },
+      { name: "Statistical Programming and Machine Learning", grade: "G" },
+      { name: "Data Visualization", grade: "G" },
+      { name: "Degree Project", grade: "VG" },
+      { name: "Internship (LIA)", grade: "VG" },
+      { name: "Business Acumen", grade: "VG" },
+      { name: "Business Intelligence and Its Commercial Opportunities", grade: "VG" },
+      { name: "Streaming Data and Cloud Solutions", grade: "VG" },
     ],
+    footnote: "VG = Pass with Distinction · G = Pass",
   },
 ];
 ---
@@ -121,7 +155,12 @@ const entries: Entry[] = [
                 <ul class="course-list" role="list">
                   {entry.courses.map((course) => (
                     <li class="course">
-                      <span class="course-name">{course.name}</span>
+                      <span class="course-main">
+                        <span class="course-name">{course.name}</span>
+                        {course.breakdown && (
+                          <span class="mono course-breakdown">{course.breakdown}</span>
+                        )}
+                      </span>
                       {course.grade && (
                         <span class={`mono course-grade ${course.standout ? "standout" : ""}`}>
                           {course.grade}
@@ -130,6 +169,9 @@ const entries: Entry[] = [
                     </li>
                   ))}
                 </ul>
+                {entry.footnote && (
+                  <p class="mono course-footnote">{entry.footnote}</p>
+                )}
               </div>
             </div>
           </div>
@@ -356,7 +398,7 @@ const entries: Entry[] = [
     align-items: baseline;
     justify-content: space-between;
     gap: 1.5rem;
-    padding-block: 0.6rem;
+    padding-block: 0.7rem;
     border-bottom: 1px solid var(--hairline);
   }
 
@@ -364,8 +406,19 @@ const entries: Entry[] = [
     border-top: 1px solid var(--hairline);
   }
 
+  .course-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
   .course-name {
     font-size: 0.95rem;
+  }
+
+  .course-breakdown {
+    font-size: 0.7rem;
+    color: var(--fog);
   }
 
   .course-grade {
@@ -377,5 +430,11 @@ const entries: Entry[] = [
   .course-grade.standout {
     color: var(--alert);
     font-weight: 500;
+  }
+
+  .course-footnote {
+    margin-top: 1rem;
+    font-size: 0.7rem;
+    color: var(--fog);
   }
 </style>
