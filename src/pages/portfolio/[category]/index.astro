@@ -22,7 +22,9 @@ const tags = [...new Set(projects.flatMap((p) => p.data.tags))].sort();
 
 <BaseLayout title={`${category.name} — Mårten Wikman`} description={category.blurb}>
   <nav class="crumbs mono-label" aria-label="Breadcrumb">
-    <a href="/">Home</a> / <span aria-current="page">Portfolio</span>
+    <a href="/">Home</a>{" / "}
+    <a href="/portfolio/">Portfolio</a>{" / "}
+    <span aria-current="page">{category.name}</span>
   </nav>
 
   <header class="category-header reveal">

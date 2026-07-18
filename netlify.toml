@@ -15,6 +15,6 @@
 
 [[redirects]]
   from = "/work"
-  to = "/portfolio/valuation-financial-modeling"
+  to = "/portfolio"
   status = 301
   force = true

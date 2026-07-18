@@ -20,7 +20,7 @@ const { pathname } = Astro.url;
 
 const nav = [
   { href: "/", label: "Home" },
-  { href: "/portfolio/valuation-financial-modeling/", label: "Portfolio", match: "/portfolio" },
+  { href: "/portfolio/", label: "Portfolio", match: "/portfolio" },
   { href: "/about/", label: "About" },
   { href: "/skills/", label: "Skills" },
   { href: "/experience/", label: "Experience" },
@@ -117,6 +117,9 @@ const isActive = (item: (typeof nav)[number]) =>
     text-transform: uppercase;
     text-decoration: none;
     color: var(--fog);
+    /* Transparent by default so the active underline doesn't shift layout. */
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid transparent;
   }
 
   nav a:hover {
@@ -125,6 +128,7 @@ const isActive = (item: (typeof nav)[number]) =>
 
   nav a[aria-current="page"] {
     color: var(--signal);
+    border-bottom-color: var(--signal);
   }
 
   main {

@@ -50,6 +50,9 @@ const { subcategories, tags } = Astro.props;
     let activeSubcategory = "";
     const activeTags = new Set<string>();
 
+    const scopes = Array.from(document.querySelectorAll<HTMLElement>("[data-filter-scope]"));
+    const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-filter-section]"));
+
     const apply = () => {
       let visible = 0;
       for (const row of rows) {
@@ -61,6 +64,19 @@ const { subcategories, tags } = Astro.props;
         row.hidden = !show;
         if (show) visible++;
       }
+
+      // While filtering, preview caps are lifted so no match stays buried.
+      const filtering = Boolean(activeSubcategory) || activeTags.size > 0;
+      for (const scope of scopes) scope.dataset.filtering = String(filtering);
+
+      // A category heading with nothing under it is just noise.
+      for (const section of sections) {
+        const rowsInSection = Array.from(
+          section.querySelectorAll<HTMLElement>("[data-project]")
+        );
+        section.hidden = rowsInSection.every((row) => row.hidden);
+      }
+
       if (noResults) noResults.hidden = visible > 0;
     };
 

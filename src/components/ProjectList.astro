@@ -6,17 +6,23 @@ interface Props {
   projects: CollectionEntry<"projects">[];
   /** When true, rows carry data-* attributes for the client-side FilterBar. */
   filterable?: boolean;
+  /**
+   * Preview cap. Rows past this are still rendered — so filtering can search
+   * the whole set — but stay hidden until a filter is active.
+   */
+  limit?: number;
 }
 
-const { projects, filterable = false } = Astro.props;
+const { projects, filterable = false, limit } = Astro.props;
 ---
 
 <ul class="project-list">
-  {projects.map((project) => {
+  {projects.map((project, index) => {
     const category = categoryByName(project.data.category);
+    const overflow = limit !== undefined && index >= limit;
     return (
       <li
-        class="project-row"
+        class:list={["project-row", { "is-overflow": overflow }]}
         data-project={filterable ? "" : undefined}
         data-subcategory={filterable ? (project.data.subcategory ?? "") : undefined}
         data-tags={filterable ? project.data.tags.join("|") : undefined}
@@ -58,6 +64,20 @@ const { projects, filterable = false } = Astro.props;
 
   .project-row:first-child {
     border-top: 1px solid var(--hairline);
+  }
+
+  /* Preview overflow: hidden until the surrounding scope is being filtered,
+     at which point every match should be reachable. */
+  .project-row.is-overflow {
+    display: none;
+  }
+
+  :global([data-filtering="true"]) .project-row.is-overflow:not([hidden]) {
+    display: flex;
+  }
+
+  .project-row[hidden] {
+    display: none;
   }
 
   .row-main {

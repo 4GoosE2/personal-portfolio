@@ -1,0 +1,157 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FilterBar from "../../components/FilterBar.astro";
+import ProjectList from "../../components/ProjectList.astro";
+import { CATEGORIES } from "../../lib/categories";
+
+/** How many projects each category shows before the "More" link. */
+const PREVIEW_COUNT = 3;
+
+const allProjects = await getCollection("projects");
+
+// Only categories with work in them; the home page carries the full map.
+const sections = CATEGORIES.map((category) => ({
+  category,
+  projects: allProjects
+    .filter((p) => p.data.category === category.name)
+    .sort((a, b) => a.data.title.localeCompare(b.data.title)),
+})).filter((section) => section.projects.length > 0);
+
+const subcategories = [
+  ...new Set(allProjects.map((p) => p.data.subcategory).filter((s): s is string => !!s)),
+].sort();
+const tags = [...new Set(allProjects.flatMap((p) => p.data.tags))].sort();
+---
+
+<BaseLayout
+  title="Portfolio — Mårten Wikman"
+  description="Case studies across valuation, due diligence, market sizing, BI, growth strategy, and post-merger integration."
+>
+  <nav class="crumbs mono-label" aria-label="Breadcrumb">
+    <a href="/">Home</a> / <span aria-current="page">Portfolio</span>
+  </nav>
+
+  <header class="portfolio-header reveal">
+    <h1>Portfolio</h1>
+    <p class="lede">
+      Case studies grouped by the kind of analysis they demonstrate. Filter
+      across everything by subcategory or tag, or open a category for the full
+      list.
+    </p>
+  </header>
+
+  {sections.length === 0 ? (
+    <p class="empty">No projects published yet.</p>
+  ) : (
+    <div data-filter-scope>
+      <FilterBar subcategories={subcategories} tags={tags} />
+
+      {sections.map(({ category, projects }) => (
+        <section class="category-section reveal" data-filter-section>
+          <div class="section-head">
+            <h2 class="section-title">
+              <a href={`/portfolio/${category.slug}/`}>{category.name}</a>
+            </h2>
+            <span class="mono-label section-count">
+              {projects.length} {projects.length === 1 ? "project" : "projects"}
+            </span>
+          </div>
+          <p class="section-blurb">{category.blurb}</p>
+
+          <ProjectList projects={projects} filterable limit={PREVIEW_COUNT} />
+
+          {projects.length > PREVIEW_COUNT && (
+            <a href={`/portfolio/${category.slug}/`} class="mono more-link">
+              More in {category.name}
+            </a>
+          )}
+        </section>
+      ))}
+    </div>
+  )}
+</BaseLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: 2.5rem;
+  }
+
+  .crumbs a {
+    color: var(--fog);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--signal);
+  }
+
+  .portfolio-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding-bottom: 1rem;
+  }
+
+  .lede {
+    color: var(--fog);
+    max-width: 58ch;
+  }
+
+  .category-section {
+    padding-top: 2.25rem;
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.35rem;
+  }
+
+  .section-title a {
+    text-decoration: none;
+  }
+
+  .section-title a:hover {
+    color: var(--signal);
+  }
+
+  .section-count {
+    flex-shrink: 0;
+  }
+
+  .section-blurb {
+    color: var(--fog);
+    font-size: 0.92rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    max-width: 58ch;
+  }
+
+  .more-link {
+    display: inline-block;
+    margin-top: 1.1rem;
+    font-size: 0.78rem;
+    color: var(--fog);
+    text-decoration: none;
+  }
+
+  .more-link::after {
+    content: " →";
+  }
+
+  .more-link:hover {
+    color: var(--signal);
+  }
+
+  .empty {
+    color: var(--fog);
+  }
+</style>
