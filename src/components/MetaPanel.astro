@@ -8,7 +8,11 @@ interface Props {
 }
 
 const { project, variant } = Astro.props;
-const { category, subcategory, tags, date, metrics, note } = project.data;
+import { originPath } from "../lib/origin";
+
+const { category, subcategory, tags, date, metrics, note, track, source, context } = project.data;
+const origin = [track, source, context].filter(Boolean).join(" · ");
+const originHref = originPath(project);
 ---
 
 <aside class={`meta-panel meta-${variant}`} aria-label="Project metadata">
@@ -56,6 +60,17 @@ const { category, subcategory, tags, date, metrics, note } = project.data;
     </div>
   )}
 
+  {origin && (
+    <div class="meta-item">
+      <span class="mono-label">Origin</span>
+      {originHref ? (
+        <a href={originHref} class="mono origin-link">{origin}</a>
+      ) : (
+        <span class="mono">{origin}</span>
+      )}
+    </div>
+  )}
+
   <div class="meta-item">
     <span class="mono-label">Date</span>
     <span class="mono">{date}</span>
@@ -100,6 +115,15 @@ const { category, subcategory, tags, date, metrics, note } = project.data;
   .tag {
     color: var(--signal);
     font-size: 0.78rem;
+  }
+
+  .origin-link {
+    color: var(--ink);
+    text-decoration-color: var(--rule);
+  }
+
+  .origin-link:hover {
+    color: var(--signal);
   }
 
   .metric-list {

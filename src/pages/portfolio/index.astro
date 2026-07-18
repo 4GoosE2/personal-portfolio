@@ -4,11 +4,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import FilterBar from "../../components/FilterBar.astro";
 import ProjectList from "../../components/ProjectList.astro";
 import { CATEGORIES } from "../../lib/categories";
+import { hasOrigin } from "../../lib/origin";
 
 /** How many projects each category shows before the "More" link. */
 const PREVIEW_COUNT = 3;
 
 const allProjects = await getCollection("projects");
+const hasOriginProjects = allProjects.some(hasOrigin);
 
 // Only categories with work in them; the home page carries the full map.
 const sections = CATEGORIES.map((category) => ({
@@ -39,6 +41,11 @@ const tags = [...new Set(allProjects.flatMap((p) => p.data.tags))].sort();
       across everything by subcategory or tag, or open a category for the full
       list.
     </p>
+    {hasOriginProjects && (
+      <a href="/portfolio/from/" class="mono origin-switch">
+        Browse by origin instead
+      </a>
+    )}
   </header>
 
   {sections.length === 0 ? (
@@ -153,5 +160,19 @@ const tags = [...new Set(allProjects.flatMap((p) => p.data.tags))].sort();
 
   .empty {
     color: var(--fog);
+  }
+
+  .origin-switch {
+    align-self: flex-start;
+    font-size: 0.78rem;
+    color: var(--fog);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.15rem;
+  }
+
+  .origin-switch:hover {
+    color: var(--signal);
+    border-bottom-color: var(--signal);
   }
 </style>

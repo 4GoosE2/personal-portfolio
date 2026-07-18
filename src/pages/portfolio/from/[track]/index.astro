@@ -1,0 +1,66 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import OriginLinks from "../../../../components/OriginLinks.astro";
+import ProjectList from "../../../../components/ProjectList.astro";
+import { hasOrigin, tracks, inTrack, sources } from "../../../../lib/origin";
+
+export async function getStaticPaths() {
+  const projects = (await getCollection("projects")).filter(hasOrigin);
+  return tracks(projects).map((track) => ({
+    params: { track: track.slug },
+    props: { trackName: track.name },
+  }));
+}
+
+const { track: trackSlug } = Astro.params;
+const { trackName } = Astro.props;
+
+const projects = inTrack((await getCollection("projects")).filter(hasOrigin), trackSlug!).sort(
+  (a, b) => a.data.title.localeCompare(b.data.title)
+);
+const sourceList = sources(projects);
+---
+
+<BaseLayout title={`${trackName} — Mårten Wikman`}>
+  <nav class="crumbs mono-label" aria-label="Breadcrumb">
+    <a href="/">Home</a>{" / "}
+    <a href="/portfolio/">Portfolio</a>{" / "}
+    <a href="/portfolio/from/">Origin</a>{" / "}
+    <span aria-current="page">{trackName}</span>
+  </nav>
+
+  <header class="reveal">
+    <h1>{trackName}</h1>
+  </header>
+
+  <OriginLinks label="Sources" base={`/portfolio/from/${trackSlug}/`} items={sourceList} />
+
+  <section class="all-projects reveal">
+    <h2 class="mono-label">Everything in {trackName}</h2>
+    <ProjectList projects={projects} />
+  </section>
+</BaseLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: 2.5rem;
+  }
+
+  .crumbs a {
+    color: var(--fog);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--signal);
+  }
+
+  .all-projects {
+    margin-top: 3rem;
+  }
+
+  .all-projects h2 {
+    margin-bottom: 1.25rem;
+  }
+</style>

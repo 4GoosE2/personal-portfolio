@@ -11,6 +11,11 @@ const projects = defineCollection({
     tags: z.array(z.string()).default([]),
     date: z.string(),
     note: z.string().optional(),
+    // Origin axis: where the work came from, independent of the discipline
+    // category above. Optional so untagged projects still build.
+    track: z.string().optional(),
+    source: z.string().optional(),
+    context: z.string().optional(),
     metrics: z
       .array(z.object({ label: z.string(), value: z.string() }))
       .default([]),

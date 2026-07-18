@@ -1,5 +1,8 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { slugify } from "../lib/categories";
+import { hasOrigin } from "../lib/origin";
 
 interface Course {
   name: string;
@@ -14,6 +17,8 @@ interface Entry {
   id: string;
   title: string;
   org: string;
+  /** Matches the origin "source" on projects, so courses can link to work. */
+  source: string;
   body: string;
   tags: string[];
   courses: Course[];
@@ -25,6 +30,7 @@ const entries: Entry[] = [
     id: "coventry",
     title: "BSc (Hons) International Business Management (Top-up)",
     org: "Coventry University in collaboration with FEI",
+    source: "Coventry University",
     body: "Advanced business management studies with a focus on international perspectives, developing strategic thinking and global business acumen.",
     tags: [
       "Accounting and Finance",
@@ -76,6 +82,7 @@ const entries: Entry[] = [
     id: "nackademin",
     title: "Business Intelligence Program",
     org: "Nackademin, Stockholm",
+    source: "Nackademin",
     body: "Comprehensive BI program including a 20-week internship at Tobii. Gained hands-on experience in data analytics, visualization, and business intelligence tools.",
     tags: [
       "Power BI",
@@ -106,6 +113,23 @@ const entries: Entry[] = [
     footnote: "VG = Pass with Distinction · G = Pass",
   },
 ];
+
+/**
+ * Map "source|course" to its origin page, but only where a project actually
+ * exists — courses without work stay as plain text rather than dead links.
+ */
+const projects = (await getCollection("projects")).filter(hasOrigin);
+const courseLinks = new Map<string, string>();
+for (const p of projects) {
+  const { track, source, context } = p.data;
+  if (!track || !source || !context) continue;
+  courseLinks.set(
+    `${slugify(source)}|${slugify(context)}`,
+    `/portfolio/from/${slugify(track)}/${slugify(source)}/${slugify(context)}/`
+  );
+}
+const linkFor = (entry: Entry, course: Course) =>
+  courseLinks.get(`${slugify(entry.source)}|${slugify(course.name)}`);
 ---
 
 <BaseLayout title="Education — Mårten Wikman">
@@ -153,7 +177,13 @@ const entries: Entry[] = [
                   {entry.courses.map((course) => (
                     <li class="course">
                       <span class="course-main">
-                        <span class="course-name">{course.name}</span>
+                        {linkFor(entry, course) ? (
+                          <a href={linkFor(entry, course)} class="course-name course-link">
+                            {course.name}
+                          </a>
+                        ) : (
+                          <span class="course-name">{course.name}</span>
+                        )}
                         {course.breakdown && (
                           <span class="mono course-breakdown">{course.breakdown}</span>
                         )}
@@ -411,6 +441,17 @@ const entries: Entry[] = [
 
   .course-name {
     font-size: 0.95rem;
+  }
+
+  /* Only courses with a project behind them are links. */
+  .course-link {
+    color: var(--ink);
+    text-decoration-color: var(--signal);
+    text-underline-offset: 3px;
+  }
+
+  .course-link:hover {
+    color: var(--signal);
   }
 
   .course-breakdown {

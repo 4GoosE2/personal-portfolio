@@ -1,0 +1,76 @@
+---
+import type { OriginNode } from "../lib/origin";
+
+interface Props {
+  label: string;
+  base: string;
+  items: OriginNode[];
+}
+
+const { label, base, items } = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class="origin-links">
+    <h2 class="mono-label">{label}</h2>
+    <ul role="list">
+      {items.map((item) => (
+        <li>
+          <a href={`${base}${item.slug}/`}>
+            <span class="origin-name">{item.name}</span>
+            <span class="mono-label origin-count">
+              {item.count} {item.count === 1 ? "project" : "projects"}
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .origin-links {
+    margin-block: 2.5rem;
+  }
+
+  .origin-links h2 {
+    margin-bottom: 1.25rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    border-top: 1px solid var(--hairline);
+  }
+
+  li:last-child {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1rem;
+    text-decoration: none;
+  }
+
+  .origin-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+
+  a:hover .origin-name {
+    color: var(--signal);
+  }
+
+  .origin-count {
+    flex-shrink: 0;
+  }
+</style>

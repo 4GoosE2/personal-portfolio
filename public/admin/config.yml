@@ -53,6 +53,29 @@ collections:
             hint: "The suggestions offered when tagging a project with a subcategory. Add a new one here first, then pick it on the project."
             fields:
               - { label: "Name", name: "name", widget: "string" }
+          - label: "Origin — tracks"
+            name: "tracks"
+            widget: "list"
+            summary: "{{fields.name}}"
+            hint: "Top level of where a project came from, e.g. Educational Projects."
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+          - label: "Origin — sources"
+            name: "sources"
+            widget: "list"
+            required: false
+            summary: "{{fields.name}}"
+            hint: "Second level: the school, workplace, or kind of private project."
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+          - label: "Origin — contexts"
+            name: "contexts"
+            widget: "list"
+            required: false
+            summary: "{{fields.name}}"
+            hint: "Third level: the course, the apartment, the specific project at work."
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
 
   - name: "projects"
     label: "Projects"
@@ -79,6 +102,36 @@ collections:
         value_field: "subcategories.*.name"
         display_fields: ["subcategories.*.name"]
         hint: "Start typing to filter. To use a new one, add it under Settings first."
+      - label: "Origin — track"
+        name: "track"
+        widget: "relation"
+        required: false
+        collection: "settings"
+        file: "taxonomy"
+        search_fields: ["tracks.*.name"]
+        value_field: "tracks.*.name"
+        display_fields: ["tracks.*.name"]
+        hint: "Educational, private, or work. Leave blank to keep a project out of the origin browse."
+      - label: "Origin — source"
+        name: "source"
+        widget: "relation"
+        required: false
+        collection: "settings"
+        file: "taxonomy"
+        search_fields: ["sources.*.name"]
+        value_field: "sources.*.name"
+        display_fields: ["sources.*.name"]
+        hint: "The school, workplace, or kind of private project."
+      - label: "Origin — context"
+        name: "context"
+        widget: "relation"
+        required: false
+        collection: "settings"
+        file: "taxonomy"
+        search_fields: ["contexts.*.name"]
+        value_field: "contexts.*.name"
+        display_fields: ["contexts.*.name"]
+        hint: "The course this was done in, or the specific project. Course names here link from the Education page."
       - label: "Tags"
         name: "tags"
         widget: "list"

@@ -33,5 +33,38 @@
   ],
   "subcategories": [
     { "name": "Growth Equity" }
+  ],
+  "tracks": [
+    { "name": "Educational Projects" },
+    { "name": "Private Projects" },
+    { "name": "Work Projects" }
+  ],
+  "sources": [
+    { "name": "Coventry University" },
+    { "name": "Nackademin" },
+    { "name": "Tobii" }
+  ],
+  "contexts": [
+    { "name": "Accounting and Finance" },
+    { "name": "Business and Sustainability" },
+    { "name": "Business Data Analysis" },
+    { "name": "Dissertation" },
+    { "name": "International Marketing" },
+    { "name": "Organisational Behaviour and Leadership in an International Context" },
+    { "name": "Strategic Management" },
+    { "name": "Statistics and Data Analysis" },
+    { "name": "Systems Understanding and Business Processes in BI" },
+    { "name": "Database Design and Modeling" },
+    { "name": "SQL" },
+    { "name": "Data Capture, Migration and Transformation" },
+    { "name": "Business Intelligence Programming Languages" },
+    { "name": "Advanced Analytics" },
+    { "name": "Statistical Programming and Machine Learning" },
+    { "name": "Data Visualization" },
+    { "name": "Degree Project" },
+    { "name": "Internship (LIA)" },
+    { "name": "Business Acumen" },
+    { "name": "Business Intelligence and Its Commercial Opportunities" },
+    { "name": "Streaming Data and Cloud Solutions" }
   ]
 }

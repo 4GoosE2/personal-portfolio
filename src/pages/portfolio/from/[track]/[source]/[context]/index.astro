@@ -1,0 +1,86 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../../../../layouts/BaseLayout.astro";
+import ProjectList from "../../../../../../components/ProjectList.astro";
+import {
+  hasOrigin,
+  tracks,
+  inTrack,
+  sources,
+  inSource,
+  contexts,
+  inContext,
+} from "../../../../../../lib/origin";
+
+export async function getStaticPaths() {
+  const projects = (await getCollection("projects")).filter(hasOrigin);
+  return tracks(projects).flatMap((track) => {
+    const trackProjects = inTrack(projects, track.slug);
+    return sources(trackProjects).flatMap((source) => {
+      const sourceProjects = inSource(trackProjects, source.slug);
+      return contexts(sourceProjects).map((context) => ({
+        params: { track: track.slug, source: source.slug, context: context.slug },
+        props: {
+          trackName: track.name,
+          sourceName: source.name,
+          contextName: context.name,
+        },
+      }));
+    });
+  });
+}
+
+const { track: trackSlug, source: sourceSlug, context: contextSlug } = Astro.params;
+const { trackName, sourceName, contextName } = Astro.props;
+
+const all = (await getCollection("projects")).filter(hasOrigin);
+const projects = inContext(inSource(inTrack(all, trackSlug!), sourceSlug!), contextSlug!).sort(
+  (a, b) => a.data.title.localeCompare(b.data.title)
+);
+---
+
+<BaseLayout title={`${contextName} — Mårten Wikman`}>
+  <nav class="crumbs mono-label" aria-label="Breadcrumb">
+    <a href="/">Home</a>{" / "}
+    <a href="/portfolio/">Portfolio</a>{" / "}
+    <a href="/portfolio/from/">Origin</a>{" / "}
+    <a href={`/portfolio/from/${trackSlug}/`}>{trackName}</a>{" / "}
+    <a href={`/portfolio/from/${trackSlug}/${sourceSlug}/`}>{sourceName}</a>{" / "}
+    <span aria-current="page">{contextName}</span>
+  </nav>
+
+  <header class="reveal">
+    <h1>{contextName}</h1>
+    <p class="lede">{sourceName} · {trackName}</p>
+  </header>
+
+  <div class="list reveal">
+    <ProjectList projects={projects} />
+  </div>
+</BaseLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: 2.5rem;
+  }
+
+  .crumbs a {
+    color: var(--fog);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--signal);
+  }
+
+  .lede {
+    color: var(--fog);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    margin-top: 0.9rem;
+  }
+
+  .list {
+    margin-top: 2.5rem;
+  }
+</style>

@@ -1,0 +1,75 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../../../layouts/BaseLayout.astro";
+import OriginLinks from "../../../../../components/OriginLinks.astro";
+import ProjectList from "../../../../../components/ProjectList.astro";
+import { hasOrigin, tracks, inTrack, sources, inSource, contexts } from "../../../../../lib/origin";
+
+export async function getStaticPaths() {
+  const projects = (await getCollection("projects")).filter(hasOrigin);
+  return tracks(projects).flatMap((track) => {
+    const trackProjects = inTrack(projects, track.slug);
+    return sources(trackProjects).map((source) => ({
+      params: { track: track.slug, source: source.slug },
+      props: { trackName: track.name, sourceName: source.name },
+    }));
+  });
+}
+
+const { track: trackSlug, source: sourceSlug } = Astro.params;
+const { trackName, sourceName } = Astro.props;
+
+const all = (await getCollection("projects")).filter(hasOrigin);
+const projects = inSource(inTrack(all, trackSlug!), sourceSlug!).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title)
+);
+const contextList = contexts(projects);
+---
+
+<BaseLayout title={`${sourceName} — Mårten Wikman`}>
+  <nav class="crumbs mono-label" aria-label="Breadcrumb">
+    <a href="/">Home</a>{" / "}
+    <a href="/portfolio/">Portfolio</a>{" / "}
+    <a href="/portfolio/from/">Origin</a>{" / "}
+    <a href={`/portfolio/from/${trackSlug}/`}>{trackName}</a>{" / "}
+    <span aria-current="page">{sourceName}</span>
+  </nav>
+
+  <header class="reveal">
+    <h1>{sourceName}</h1>
+  </header>
+
+  <OriginLinks
+    label="Courses & projects"
+    base={`/portfolio/from/${trackSlug}/${sourceSlug}/`}
+    items={contextList}
+  />
+
+  <section class="all-projects reveal">
+    <h2 class="mono-label">Everything from {sourceName}</h2>
+    <ProjectList projects={projects} />
+  </section>
+</BaseLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: 2.5rem;
+  }
+
+  .crumbs a {
+    color: var(--fog);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--signal);
+  }
+
+  .all-projects {
+    margin-top: 3rem;
+  }
+
+  .all-projects h2 {
+    margin-bottom: 1.25rem;
+  }
+</style>

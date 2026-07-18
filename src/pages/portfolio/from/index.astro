@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import OriginLinks from "../../../components/OriginLinks.astro";
+import { hasOrigin, tracks } from "../../../lib/origin";
+
+const projects = (await getCollection("projects")).filter(hasOrigin);
+const trackList = tracks(projects);
+---
+
+<BaseLayout
+  title="Browse by origin — Mårten Wikman"
+  description="Projects grouped by where they came from: education, private work, and professional work."
+>
+  <nav class="crumbs mono-label" aria-label="Breadcrumb">
+    <a href="/">Home</a>{" / "}
+    <a href="/portfolio/">Portfolio</a>{" / "}
+    <span aria-current="page">Origin</span>
+  </nav>
+
+  <header class="reveal">
+    <h1>Browse by origin</h1>
+    <p class="lede">
+      The same projects as the main portfolio, grouped by where they came from
+      rather than by the kind of analysis.
+    </p>
+  </header>
+
+  {trackList.length === 0 ? (
+    <p class="empty">No projects have an origin set yet.</p>
+  ) : (
+    <OriginLinks label="Tracks" base="/portfolio/from/" items={trackList} />
+  )}
+</BaseLayout>
+
+<style>
+  .crumbs {
+    margin-bottom: 2.5rem;
+  }
+
+  .crumbs a {
+    color: var(--fog);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--signal);
+  }
+
+  .lede {
+    color: var(--fog);
+    max-width: 58ch;
+    margin-top: 0.9rem;
+  }
+
+  .empty {
+    color: var(--fog);
+    margin-top: 2rem;
+  }
+</style>
