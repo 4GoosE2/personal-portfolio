@@ -45,6 +45,8 @@ metrics:
     value: 47%
   - label: Financed Emissions vs Operational Emissions
     value: 48,4m tonnes vs 23 000 tonnes
+  - label: Grade
+    value: "64"
 images:
   - /uploads/skärmbild-2026-07-19-175529.png
   - /uploads/skärmbild-2026-07-19-175411.png
