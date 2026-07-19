@@ -143,6 +143,11 @@ collections:
         widget: "text"
         required: false
         hint: "Shown in the sticky panel: why you took this on, what it was for, anything a reader should know first."
+      - label: "Feedback"
+        name: "feedback"
+        widget: "text"
+        required: false
+        hint: "Shown in a panel at the very foot of the page, spanning both columns. Leave blank and nothing appears."
       - label: "Key metrics"
         name: "metrics"
         widget: "list"

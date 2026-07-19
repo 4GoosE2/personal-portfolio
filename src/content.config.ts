@@ -11,6 +11,8 @@ const projects = defineCollection({
     tags: z.array(z.string()).default([]),
     date: z.string(),
     note: z.string().optional(),
+    /** Rendered as a tinted panel at the foot of the page; hidden when empty. */
+    feedback: z.string().optional(),
     // Origin axis: where the work came from, independent of the discipline
     // category above. Optional so untagged projects still build.
     track: z.string().optional(),

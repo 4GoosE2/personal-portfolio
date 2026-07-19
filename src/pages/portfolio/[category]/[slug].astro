@@ -18,6 +18,12 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const category = categoryByName(project.data.category)!;
 const { Content } = await render(project);
+
+/** YAML folds blank lines to a single "\n", so split rather than pre-wrap. */
+const feedbackParagraphs = (project.data.feedback ?? "")
+  .split(/\n+/)
+  .map((p) => p.trim())
+  .filter(Boolean);
 ---
 
 <BaseLayout title={`${project.data.title} — Mårten Wikman`}>
@@ -58,6 +64,15 @@ const { Content } = await render(project);
         </div>
       </div>
     </div>
+
+    {feedbackParagraphs.length > 0 && (
+      <aside class="feedback" aria-labelledby="feedback-heading">
+        <h2 id="feedback-heading" class="mono-label">Feedback</h2>
+        {feedbackParagraphs.map((paragraph) => (
+          <p class="feedback-text">{paragraph}</p>
+        ))}
+      </aside>
+    )}
   </article>
 </BaseLayout>
 
@@ -128,6 +143,29 @@ const { Content } = await render(project);
 
   .meta-strip-slot {
     display: none;
+  }
+
+  /* Sits outside the grid so it spans the body and the sidebar, closing off
+     the page. The one tinted surface on the site — it carries someone else's
+     voice, so it reads as a distinct object rather than a decorative card. */
+  .feedback {
+    margin-top: 3.5rem;
+    padding: 1.75rem 2rem;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--rule) 38%, var(--paper));
+  }
+
+  .feedback h2 {
+    margin-bottom: 0.85rem;
+  }
+
+  .feedback-text {
+    max-width: var(--measure);
+  }
+
+  .feedback-text + .feedback-text {
+    margin-top: 0.9em;
   }
 
   .cover {
