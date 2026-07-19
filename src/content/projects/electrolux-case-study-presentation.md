@@ -45,6 +45,8 @@ metrics:
     value: 12,8bn SEK
   - label: China Market Share
     value: 1%
+  - label: Grade
+    value: "80"
 ---
 **Opening**
 
