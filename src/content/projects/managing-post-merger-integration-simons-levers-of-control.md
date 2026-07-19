@@ -1,5 +1,6 @@
 ---
-title: "Managing Post-Merger Integration through Simons' Levers of Control: A Qualitative Study of Managerial Practice"
+title: "Managing Post-Merger Integration through Simons' Levers of Control: A
+  Qualitative Study of Managerial Practice"
 category: Post-Merger Integration
 subcategory: Management Control Systems
 track: Educational Projects
@@ -18,67 +19,37 @@ note: >-
   My dissertation investigates how managers actually use Robert Simons' Four
   Levers of Control (belief, boundary, diagnostic, and interactive control
   systems) during post-merger integration, a topic where academic research on
-  comprehensive control frameworks remains surprisingly thin despite
-  integration being the single biggest determinant of whether M&A deals
-  succeed.
+  comprehensive control frameworks remains surprisingly thin despite integration
+  being the single biggest determinant of whether M&A deals succeed.
 
-  Using an interpretivist, abductive approach, I conducted eight
-  semi-structured interviews with integration managers, planners, and
-  consultants across different organizations, then applied thematic analysis
-  structured around the four levers while staying open to whatever the data
-  actually showed.
+  Using an interpretivist, abductive approach, I conducted eight semi-structured interviews with integration managers, planners, and consultants across different organizations, then applied thematic analysis structured around the four levers while staying open to whatever the data actually showed.
 
-  The central finding is that managers don't use the four levers equally.
-  Belief systems and interactive controls were used confidently and
-  extensively; boundary systems were consistently the weakest and hardest for
-  participants to even describe. Rather than reading this as a gap in control,
-  I argue it reflects a substitution effect: in the predominantly Nordic
-  management context studied, belief systems appear to absorb much of the
-  constraining function that boundary systems formally perform, a pattern
-  explained through Hofstede's cultural dimensions (Sweden's low uncertainty
-  avoidance, low power distance, and low masculinity all cut against
-  formalized rule-setting). This extends existing critique of the framework by
-  showing that its four levers can substitute for one another, not just
-  complement each other, and that the balance between them is shaped by
-  national culture, not just organizational context. The dissertation received
-  a First Class grade (70).
+  The central finding is that managers don't use the four levers equally. Belief systems and interactive controls were used confidently and extensively; boundary systems were consistently the weakest and hardest for participants to even describe. Rather than reading this as a gap in control, I argue it reflects a substitution effect: in the predominantly Nordic management context studied, belief systems appear to absorb much of the constraining function that boundary systems formally perform, a pattern explained through Hofstede's cultural dimensions (Sweden's low uncertainty avoidance, low power distance, and low masculinity all cut against formalized rule-setting). This extends existing critique of the framework by showing that its four levers can substitute for one another, not just complement each other, and that the balance between them is shaped by national culture, not just organizational context. The dissertation received a First Class grade (70).
 feedback: >-
   Problem Formulation & Development (10%) — 70%. Outstanding & original topic,
   well developed & well defined.
 
-  Review of Literature (20%) — 70%. A wide range of source material used;
-  literature critically evaluated; original thinking evident; up to date
-  information; significance of sources reviewed indicated; organised in a
-  logical and coherent manner in view of the research aims.
+  Review of Literature (20%) — 70%. A wide range of source material used; literature critically evaluated; original thinking evident; up to date information; significance of sources reviewed indicated; organised in a logical and coherent manner in view of the research aims.
 
-  Methodology (15%) — 70%. A well-planned programme of study & investigation
-  followed; shows an awareness of appropriate methodology, well applied and
-  justified; validity of methods related to dissertation design, detailed,
-  relevant sampling techniques.
+  Methodology (15%) — 70%. A well-planned programme of study & investigation followed; shows an awareness of appropriate methodology, well applied and justified; validity of methods related to dissertation design, detailed, relevant sampling techniques.
 
-  General Content / Analysis of Results (30%) — 70%. Accurate interpretation of
-  findings, their value and significance; results supported by graphical
-  presentation as appropriate. Results interpreted and integrated into existing
-  literature effectively; discussion logically developed.
+  General Content / Analysis of Results (30%) — 70%. Accurate interpretation of findings, their value and significance; results supported by graphical presentation as appropriate. Results interpreted and integrated into existing literature effectively; discussion logically developed.
 
-  Conclusions and Recommendations (15%) — 70%. Attainment of objectives fully
-  reviewed; conclusions developed from appropriate range of data/sources;
-  recommendations consistent with results; clear understanding of potential
-  applications and/or limitations.
+  Conclusions and Recommendations (15%) — 70%. Attainment of objectives fully reviewed; conclusions developed from appropriate range of data/sources; recommendations consistent with results; clear understanding of potential applications and/or limitations.
 
-  Standard of Presentation (10%) — 70%. Clear writing style with good grammar
-  and spelling, clearly and appropriately laid out in a professional manner.
-  Wide range of references properly noted; bibliography indicates wide ranging
-  search around subject; appendices effectively support text.
+  Standard of Presentation (10%) — 70%. Clear writing style with good grammar and spelling, clearly and appropriately laid out in a professional manner. Wide range of references properly noted; bibliography indicates wide ranging search around subject; appendices effectively support text.
 metrics:
   - label: Grade
-    value: First Class (70)
+    value: "70"
   - label: Method
     value: 8 semi-structured interviews
   - label: Participants
     value: Integration managers, planners, consultants
   - label: Word count
-    value: "13,350"
+    value: 13,350
+images:
+  - /uploads/skärmbild-2026-07-19-184240.png
+  - /uploads/skärmbild-2026-07-19-184318.png
 ---
 
 ## Abstract
