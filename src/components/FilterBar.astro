@@ -5,6 +5,10 @@ interface Props {
 }
 
 const { subcategories, tags } = Astro.props;
+
+/** Tags beyond this stay hidden behind a "Show more" toggle. */
+const TAG_PREVIEW = 5;
+const hasHiddenTags = tags.length > TAG_PREVIEW;
 ---
 
 {(subcategories.length > 0 || tags.length > 0) && (
@@ -29,11 +33,22 @@ const { subcategories, tags } = Astro.props;
       <div class="filter-group" role="group" aria-label="Filter by tag">
         <span class="mono-label">Tags</span>
         <div class="chips">
-          {tags.map((tag) => (
-            <button type="button" class="chip" data-tag-chip={tag} aria-pressed="false">
+          {tags.map((tag, index) => (
+            <button
+              type="button"
+              class:list={["chip", { "tag-overflow": index >= TAG_PREVIEW }]}
+              data-tag-chip={tag}
+              aria-pressed="false"
+              hidden={index >= TAG_PREVIEW}
+            >
               {tag}
             </button>
           ))}
+          {hasHiddenTags && (
+            <button type="button" class="chip chip-toggle" data-tag-toggle aria-expanded="false">
+              Show more
+            </button>
+          )}
         </div>
       </div>
     )}
@@ -92,6 +107,9 @@ const { subcategories, tags } = Astro.props;
       });
     });
 
+    const tagToggle = bar.querySelector<HTMLButtonElement>("[data-tag-toggle]");
+    const isCollapsed = () => tagToggle?.getAttribute("aria-expanded") !== "true";
+
     bar.querySelectorAll<HTMLButtonElement>("[data-tag-chip]").forEach((chip) => {
       chip.addEventListener("click", () => {
         const tag = chip.dataset.tagChip ?? "";
@@ -100,9 +118,31 @@ const { subcategories, tags } = Astro.props;
         else activeTags.delete(tag);
         chip.classList.toggle("is-active", on);
         chip.setAttribute("aria-pressed", String(on));
+        // Clearing an overflow tag while collapsed tucks it back away.
+        if (!on && isCollapsed() && chip.classList.contains("tag-overflow")) {
+          chip.hidden = true;
+        }
         apply();
       });
     });
+
+    // Collapse the tag list to a preview, revealing the rest on demand.
+    if (tagToggle) {
+      const overflow = Array.from(
+        bar.querySelectorAll<HTMLElement>(".tag-overflow")
+      );
+      tagToggle.addEventListener("click", () => {
+        const expanded = tagToggle.getAttribute("aria-expanded") === "true";
+        const next = !expanded;
+        // When collapsing, an active tag stays visible — otherwise the filter
+        // would apply with no on-screen way to see or clear it.
+        for (const chip of overflow) {
+          chip.hidden = !next && !chip.classList.contains("is-active");
+        }
+        tagToggle.setAttribute("aria-expanded", String(next));
+        tagToggle.textContent = next ? "Show fewer" : "Show more";
+      });
+    }
   }
 </script>
 
@@ -152,6 +192,22 @@ const { subcategories, tags } = Astro.props;
   .chip.is-active {
     color: var(--signal);
     text-decoration: underline;
+  }
+
+  /* The Show more / fewer control reads as a quiet, italic aside, not a tag. */
+  .chip-toggle {
+    font-style: italic;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--rule);
+  }
+
+  .chip-toggle:hover {
+    color: var(--signal);
+  }
+
+  .chip[hidden] {
+    display: none;
   }
 
   .no-results {
