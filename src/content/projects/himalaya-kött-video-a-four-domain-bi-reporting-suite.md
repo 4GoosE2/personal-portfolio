@@ -34,7 +34,16 @@ metrics:
     value: 22,5%
   - label: Employees Tracked
     value: "19"
-images: []
+cover: ""
+images:
+  - /uploads/screenshot-2024-04-13-102054.png
+  - /uploads/screenshot-2024-04-13-102143.png
+  - /uploads/screenshot-2024-04-13-102223.png
+  - /uploads/screenshot-2024-04-13-102303.png
+  - /uploads/screenshot-2024-04-13-102329.png
+  - /uploads/screenshot-2024-04-13-102350.png
+  - /uploads/screenshot-2024-04-13-102414.png
+  - /uploads/screenshot-2024-04-13-102434.png
 ---
 **About this project**
 
