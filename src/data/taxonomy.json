@@ -67,6 +67,9 @@
     },
     {
       "name": "Cloud Data Architecture & ETL"
+    },
+    {
+      "name": "Data Warehousing & ETL Pipeline Design"
     }
   ],
   "tracks": [
