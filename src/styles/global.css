@@ -213,6 +213,25 @@ hr {
   color: var(--signal);
 }
 
+/* Fenced code blocks: a quiet tinted panel that scrolls sideways rather than
+   letting long SQL lines widen the page. */
+.prose pre {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  padding: 1.25rem 1.4rem;
+  margin-block: 1.6rem;
+  overflow-x: auto;
+  background: color-mix(in srgb, var(--rule) 26%, var(--paper));
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+}
+
+.prose pre code {
+  color: var(--ink);
+  font-size: inherit;
+}
+
 .prose table {
   border-collapse: collapse;
   font-family: var(--font-mono);

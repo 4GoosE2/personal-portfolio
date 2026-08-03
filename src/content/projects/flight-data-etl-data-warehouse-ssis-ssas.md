@@ -39,7 +39,7 @@ images:
   - /uploads/screenshot-2024-05-28-185944.png
   - /uploads/null-hantering.png
 ---
-# Data Warehouse Schema & Constraints
+### Data Warehouse Schema & Constraints
 
 ```
 ALTER TABLE DimAirplane
@@ -113,7 +113,7 @@ WHERE Tailnumber = 'John Doe'
 
 ```
 
-# Unknown-Member Handling
+### Unknown-Member Handling
 
 ```
 INSERT INTO DimAirplane 
@@ -176,7 +176,7 @@ ALTER TABLE FactFlight
 ADD FlightID INT PRIMARY KEY IDENTITY (1,1)
 ```
 
-# Data Quality Investigation
+### Data Quality Investigation
 
 ```
 SELECT *

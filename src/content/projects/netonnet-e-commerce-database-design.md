@@ -63,12 +63,9 @@ images:
 
 **Dimensional model.** The team finished by building a snowflake-leaning star schema for reporting. The original plan was to use `Product` as the fact table, but the team changed direction partway through and used `Order` as the fact table instead. The final model has one fact table (`OrderFact`) and five dimensions: `OrderDim`, `DateDim`, `ProductDim`, `CustomerDim`, and `ImageDim`. Notably, `ImageDim` connects through `ProductDim` rather than directly to the fact table, a deliberate snowflake at that one point in an otherwise star-shaped model.
 
-
-
-# Code
-
 ### 1. OLTP Schema: Table Creation
 
+```
 CREATE DATABASE NetOnNet
 Go
 USE NetOnNet
@@ -103,7 +100,7 @@ AccountType nvarchar (20) not null)
 Create table Customer
 (
 CustomerID	int	identity (1,1) primary key,
-\[Name]		nvarchar (20) not null,
+[Name]		nvarchar (20) not null,
 MiddleName	nvarchar (20),
 LastName	nvarchar (20) not null,
 Mail		nvarchar (50) not null,
@@ -126,7 +123,7 @@ PaymentTypeID int PRIMARY KEY IDENTITY(1,1),
 PaymentType nvarchar(30) not null
 )
 
-Create table \[Order]
+Create table [Order]
 (
 OrderID int identity (1,1)  primary key,
 CustomerID int foreign key references Customer(CustomerID) not null,
@@ -134,7 +131,7 @@ PaymentTypeID int FOREIGN KEY REFERENCES PaymentType(PaymentTypeID),
 OrderDate date not null,
 )
 
-\--Create BridgeTable
+--Create BridgeTable
 create table ProductOrder
 (
 ProductID int foreign key references Product(ProductID) not null,
@@ -146,7 +143,7 @@ Create table AccountDetails
 (
 AccountID int primary key Foreign key references Account(AccountID),
 UserName nvarchar (50),
-\[Password] nvarchar (50),
+[Password] nvarchar (50),
 )
 
 Create table Invoice
@@ -157,7 +154,7 @@ DateIssued date not null,
 DueDate date not null
 )
 
-Create table \[Address]
+Create table [Address]
 (AddressID int identity (1,1) primary key,
 CustomerID int foreign key references Customer(CustomerID) not null,
 City nvarchar (50) not null,
@@ -191,7 +188,7 @@ StartDate date NOT NULL,
 EndDate date NOT NULL
 )
 
-CREATE TABLE \[Description]
+CREATE TABLE [Description]
 (
 ProductID int PRIMARY KEY FOREIGN KEY REFERENCES Product(ProductID),
 ProductDescription nvarchar(500) NOT NULL
@@ -211,11 +208,13 @@ ProductID int FOREIGN KEY REFERENCES Product(ProductID),
 ReviewerName nvarchar(50) NOT NULL,
 ReviewText nvarchar(300) NOT NULL
 )
+```
 
 ### 2. OLTP Schema: Sample Data Inserts
 
 **Category & SubCategory**
 
+```
 insert into Category (CategoryName)
 values
 ('Computer'),
@@ -243,9 +242,11 @@ values
 (5, 'SmartSpeakers'),
 (6, 'RoboticVacuumCleaner'),
 (6, 'HandheldVacuumCleaner')
+```
 
 **Products (66 products across 16 subcategories)**
 
+```
 insert into Product (SubCategoryID, Brand, ProductName, SalesPrice, InStock)
 values
 (1, 'Acer', 'Acer Nitro 5', 19990.0, 1),--Laptop 1
@@ -254,16 +255,18 @@ values
 (1, 'Asus', 'Asus TUF 15', 34990.0, 1), --4
 (1, 'Lenovo', 'Lenovo Legion Slim 5', 19990.0, 1), --5
 (1, 'Hp', 'Hp Omen 16', 12990.0, 1), --6
+```
 
 **Inventory (two weekly stock counts across all 66 products)**
 
-\--Vi har ett lager med 66 unika produkter.
+```
+--Vi har ett lager med 66 unika produkter.
 --En gång i vecka, på måndag, genomför vi en inventering av vårt lager.
 --Där vi kollar hur många produkter har vi  på lager till det datumet.
 --Vi kollar hur många produkter var sålda/retunerade under den vecka.
 --Totalt har data på 2 veckor.
 
-\--V nr.1, måndag 2024-01-22
+--V nr.1, måndag 2024-01-22
 INSERT INTO Inventory (ProductId, UnitBalance, UnitsIn, UnitsOut, UnitsPrice, InventoryDate)
 VALUES
 (1, 50, 50, NULL, 13000.0, '2024-01-22'),
@@ -349,9 +352,11 @@ VALUES
 (64, 15, 5, NULL, 3000.0, '2024-01-29'),
 (65, 22, 15, NULL, 2000.0, '2024-01-29'),
 (66, 29, 10, 1, 2000.0, '2024-01-29')
+```
 
 **Reviews (including a handful of deliberately negative reviews)**
 
+```
 insert into Review (ProductID, ReviewerName, ReviewText)
 values
 -- Laptops
@@ -362,7 +367,7 @@ values
 (5, 'Eva', 'Lenovo Legion Slim 5 is ultra-slim and powerful. Ideal for on-the-go professionals.'),
 (6, 'Frank', 'Hp Omen 16 provides an immersive gaming experience with its powerful specs.'),
 
-\--Reviews for Tablet
+--Reviews for Tablet
 (10, 'Alice', 'The Apple iPad Air 5th gen is an incredible tablet with a stunning display and powerful performance.'),
 (11, 'Bob', 'The Apple iPad 9th gen offers great value for money with its sleek design and smooth user experience.'),
 (12, 'Charlie', 'Lenovo M8 4th Gen 8 is a budget-friendly tablet with decent performance for everyday use.'),
@@ -439,9 +444,11 @@ values
 (16, 'Sophia', 'Disappointed. Short battery life, overheating, and camera falls short. Price not justified.'),
 (63, 'Megan', 'Unimpressed with the Dyson V10 Origin. Suction power is lacking. Expected better performance for the price.'),
 (49, 'Alex', 'Disappointed with the Marshall Woburn II BT Bluetooth Speakers. Audio quality is subpar.')
+```
 
 **Discounts**
 
+```
 values
 ('Special Offer'),    --Special Erbjudanden Valfri %
 ('Seasonal Clearance'), -- Säsongsutförsäljning/ 50%
@@ -455,10 +462,12 @@ values
 (1, 10, 0.85, '2024-01-08', '2024-01-31'),
 (1, 16, 0.85, '2024-01-08', '2024-01-31'),
 (1, 20, 0.85, '2024-01-08', '2024-01-31'),
+```
 
 **Descriptions & Images**
 
-INSERT INTO \[Description]
+```
+INSERT INTO [Description]
 Values
 (1, 'A gaming laptop with a 15.6-inch display, 8GB RAM, and 512GB SSD storage.'),
 (2, 'A gaming laptop with a 17.3-inch display, 8GB RAM, and 512GB SSD storage.'),
@@ -544,32 +553,34 @@ Values
 
 INSERT INTO Image (ProductID, ImageLink)
 VALUES
-(1,'<https://avatars.mds.yandex.net/get-mpic/5219318/img_id6331158175047946252.png/orig>') ,
-(16, '<https://www.theapplepost.com/wp-content/uploads/2023/02/4B3DE31A-E802-409E-91E5-31313A43C3E1.jpg>'),
-(20, '[https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/Galaxy_S23_Ultra_concept_dimensions_display_specs_S23_S23_plus_drdNBC_6.jpg](https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/Galaxy_S23_Ultra_concept_dimensions_display_specs_S23_S23_plus_drdNBC_6.jpg)'),
-(63, '<https://img.joomcdn.net/ce72d1204888e96b7945a4d6fa57a8a30941d2ae_original.jpeg>'),
-(63, '<https://i-lite.ru/wp-content/uploads/2022/07/dyson-cyclone-v10-animal2.jpg>'),
-(2,'<https://www.pngall.com/wp-content/uploads/2016/05/Laptop-Free-Download-PNG.png>')
+(1,'https://avatars.mds.yandex.net/get-mpic/5219318/img_id6331158175047946252.png/orig') ,
+(16, 'https://www.theapplepost.com/wp-content/uploads/2023/02/4B3DE31A-E802-409E-91E5-31313A43C3E1.jpg'),
+(20, 'https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/Galaxy_S23_Ultra_concept_dimensions_display_specs_S23_S23_plus_drdNBC_6.jpg'),
+(63, 'https://img.joomcdn.net/ce72d1204888e96b7945a4d6fa57a8a30941d2ae_original.jpeg'),
+(63, 'https://i-lite.ru/wp-content/uploads/2022/07/dyson-cyclone-v10-animal2.jpg'),
+(2,'https://www.pngall.com/wp-content/uploads/2016/05/Laptop-Free-Download-PNG.png')
+```
 
 **Customers, Accounts & Payment**
 
+```
 insert into Customer
 values
-('Eva', NULL, 'Andersson', '[eva.andersson2012@gmail.com](mailto:eva.andersson2012@gmail.com)', '+46 70 123 45 67'), --1
-('Carl', 'Anders', 'Johansson', '[carl.johansson23@yahoo.com](mailto:carl.johansson23@yahoo.com)', '+46 70 987 65 43'), --2
-('Anna', NULL, 'Larsson', '[anna.larsson1980@gmail.com](mailto:anna.larsson1980@gmail.com)', '+46 8 111 22 33'),--Business customer 3
-('Göran', 'Stefan', 'Nilsson', '[goran.nilsson1254@hotmail.com](mailto:goran.nilsson1254@hotmail.com)', '+46 70 444 55 66'), --4
-('Karin', 'Eva', 'Eriksson', '[karin.eriksson@hotmail.com](mailto:karin.eriksson@hotmail.com)', '+46 8 777 88 99'),--Business customer 5
-('Oskar', NULL, 'Karlsson', '[oskar.karlsson23@gmail.com](mailto:oskar.karlsson23@gmail.com)', '+46 70 123 45 67'), --6
-('Sofia', 'Birgitta', 'Berg', '[sofia.berg34@yahoo.com](mailto:sofia.berg34@yahoo.com)', '+46 70 987 65 43'), --7
-('Daniel', 'Patrik', 'Persson', '[daniel.persson301@hotmail.com](mailto:daniel.persson301@hotmail.com)', '+46 8 111 22 33'),--Business customer 8
-('Maria', 'Louise', 'Lind', '[maria.lind@hotmail.com](mailto:maria.lind@hotmail.com)', '+46 70 444 55 66'), --9
-('Anders', 'Mikael', 'Månsson', '[anders.mansson78@gmail.com](mailto:anders.mansson78@gmail.com)', '+46 8 777 88 99'),--Business customer 10
-('Elin', NULL, 'Svensson', '[elin.svensson@gmail.com](mailto:elin.svensson@gmail.com)', '+46 70 123 45 67'), --11
-('Nils', 'Gustav', 'Gustafsson', '[nils.gustafsson85@yahoo.com](mailto:nils.gustafsson85@yahoo.com)', '+46 70 987 65 43'), --12
-('Johan', 'Fredrik', 'Larsson', '[johan.larsson@gmail.com](mailto:johan.larsson@gmail.com)', '+46 70 111 22 33'),--Business customer 13
-('Helena', 'Maria', 'Andersson', '[helena.andersson@yahoo.com](mailto:helena.andersson@yahoo.com)', '+46 8 444 55 66'),--Business customer 14
-('Magnus', 'Anders', 'Persson', '[magnus.persson@gmail.com](mailto:magnus.persson@gmail.com)', '+46 70 987 65 43') --15
+('Eva', NULL, 'Andersson', 'eva.andersson2012@gmail.com', '+46 70 123 45 67'), --1
+('Carl', 'Anders', 'Johansson', 'carl.johansson23@yahoo.com', '+46 70 987 65 43'), --2
+('Anna', NULL, 'Larsson', 'anna.larsson1980@gmail.com', '+46 8 111 22 33'),--Business customer 3
+('Göran', 'Stefan', 'Nilsson', 'goran.nilsson1254@hotmail.com', '+46 70 444 55 66'), --4
+('Karin', 'Eva', 'Eriksson', 'karin.eriksson@hotmail.com', '+46 8 777 88 99'),--Business customer 5
+('Oskar', NULL, 'Karlsson', 'oskar.karlsson23@gmail.com', '+46 70 123 45 67'), --6
+('Sofia', 'Birgitta', 'Berg', 'sofia.berg34@yahoo.com', '+46 70 987 65 43'), --7
+('Daniel', 'Patrik', 'Persson', 'daniel.persson301@hotmail.com', '+46 8 111 22 33'),--Business customer 8
+('Maria', 'Louise', 'Lind', 'maria.lind@hotmail.com', '+46 70 444 55 66'), --9
+('Anders', 'Mikael', 'Månsson', 'anders.mansson78@gmail.com', '+46 8 777 88 99'),--Business customer 10
+('Elin', NULL, 'Svensson', 'elin.svensson@gmail.com', '+46 70 123 45 67'), --11
+('Nils', 'Gustav', 'Gustafsson', 'nils.gustafsson85@yahoo.com', '+46 70 987 65 43'), --12
+('Johan', 'Fredrik', 'Larsson', 'johan.larsson@gmail.com', '+46 70 111 22 33'),--Business customer 13
+('Helena', 'Maria', 'Andersson', 'helena.andersson@yahoo.com', '+46 8 444 55 66'),--Business customer 14
+('Magnus', 'Anders', 'Persson', 'magnus.persson@gmail.com', '+46 70 987 65 43') --15
 
 ('Private'),
 ('Business')
@@ -609,10 +620,12 @@ values
 ('Invoice'),
 ('Swish'),
 ('Klarna')
+```
 
 **Orders, Order Lines & Invoices**
 
-INSERT INTO \[Order]
+```
+INSERT INTO [Order]
 Values
 (15, 1,  '2024-01-24'),     --1
 (11, 3, '2024-01-24'),   --2
@@ -653,9 +666,11 @@ VALUES
 --0 betyder att faktura är ej betalad
 (4, 1, '2024-01-25', '2024-02-25'),
 (7, 0, '2024-01-28', '2024-02-28')
+```
 
 ### 3. Dimensional Model: Star / Snowflake Schema
 
+```
 CREATE DATABASE NetOnNetStar
 go
 use NetOnNetStar
@@ -690,20 +705,20 @@ NetOnNet.dbo.Customer
 
 (
 DateID          int PRIMARY KEY identity (1,1),
-\[Date]          date,
-\[Week]            int,
-\[Month]           NVARCHAR(20),
-\[Quarter]         int,
-\[Year]            int
+[Date]          date,
+[Week]            int,
+[Month]           NVARCHAR(20),
+[Quarter]         int,
+[Year]            int
 )
 
 INSERT INTO DateDim
 (
-\[Date],
-\[Week],
-\[Month],
-\[Quarter],
-\[Year]
+[Date],
+[Week],
+[Month],
+[Quarter],
+[Year]
 )
 
 SELECT DISTINCT
@@ -712,7 +727,7 @@ DATEPART(WEEK, OrderDate),
 MONTH(OrderDate),
 DATEPART(QUARTER, OrderDate),
 YEAR(OrderDate)
-FROM NetOnNet.dbo.\[Order]
+FROM NetOnNet.dbo.[Order]
 
 CREATE TABLE ProductDim
 (
@@ -787,7 +802,7 @@ o.OrderID,
 pt.PaymentType,
 OrderDate
 FROM
-NetOnNet.dbo.\[Order] o
+NetOnNet.dbo.[Order] o
 JOIN
 NetOnNet.dbo.PaymentType pt ON o.PaymentTypeID = pt.PaymentTypeID
 
@@ -809,7 +824,7 @@ c.CustomerID,
 d.DateID,
 COUNT(o.OrderID) AS NumberOfOrders
 FROM
-NetOnNet.dbo.\[Order] o
+NetOnNet.dbo.[Order] o
 JOIN
 NetOnNet.dbo.ProductOrder po ON o.OrderID = po.OrderID
 JOIN
@@ -817,6 +832,7 @@ NetOnNet.dbo.Product p ON po.ProductID = p.ProductID
 JOIN
 NetOnNet.dbo.Customer c ON o.CustomerID = c.CustomerID
 JOIN
-DateDim d ON o.\[OrderDate] = d.\[Date]
+DateDim d ON o.[OrderDate] = d.[Date]
 GROUP BY
 o.OrderID, p.ProductID, c.CustomerID, d.DateID;
+```

@@ -670,7 +670,7 @@ END;
 GO
 ```
 
-### Pipeline Execution - full order of operations, automated as a   SQL Server Agent job (runs on demand / on schedule)
+### Pipeline Execution
 
 
 ```
